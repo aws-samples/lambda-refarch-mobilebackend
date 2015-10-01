@@ -1,6 +1,6 @@
 # AWS Lambda Reference Architecture: Mobile Backends
 
-The [Mobile Backends](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/lambda-refarch-mobilebackend.pdf) reference architecture is a serverless event-driven API architecture that uses AWS Lambda, API Gateway, and other AWS Services. This architecture is ideal for mobile developers who need access to  workloads that need more than one data derivative of an object. This demo application is based on this simple architecture and can be created with two AWS CloudFormation templates, CloudSearch Engine, and a mobile SDK from API Gateway.
+The [Mobile Backends](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/lambda-refarch-mobilebackend.pdf) reference architecture is a serverless event-driven API architecture that uses AWS Lambda, API Gateway, and other AWS Services. This architecture is ideal for mobile developers who need access to scalable, event-driven infrastructure without having to manage the underlying compute resources. This demo application is based on this simple architecture and can be created with two AWS CloudFormation templates, CloudSearch Instance, and a mobile SDK from API Gateway.
 
 [Template One](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backends/lambda_data_stores.template)
 does the following:
