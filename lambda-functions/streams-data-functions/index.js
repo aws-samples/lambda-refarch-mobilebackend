@@ -1,49 +1,52 @@
 var AWS = require('aws-sdk');
 var cloudSearchDomain = new AWS.CloudSearchDomain({endpoint : 'CLOUDSEARCH_DOCUMENT_ENDPOINT'});
-var batchDocuments = [];
 
 
 exports.handler = function(event, context) {
-    processSearchRecord(context, 0, event.Records);
+	var records = event.Records;
+	var searchDocuments = createSearchDocuments(records);
+	
+    uploadSearchDocuments(context, searchDocuments);
 }
 
-// Process each DynamoDB record
-function processSearchRecord(context, index, records) {
+function createSearchDocuments(records) {
+	var searchDocuments = []
+	
+	for(var i = 0; i<records.length; i++) {
+ 		var record = records[i];
+ 		
+ 		if (record.eventName === "INSERT") {
+       		var searchDocument = {
+            	type : 'add',
+            	id : record.dynamodb.Keys.photoId.S,
+            	fields : {
+                	user_id : record.dynamodb.Keys.userId.S,
+                	headline : record.dynamodb.NewImage.headline.S,
+                	s3_url : record.dynamodb.NewImage.s3Url.S
+            }
+        	searchDocuments.push(searchDocument);
+    	} 
+	}	
+	return searchDocuments;
+}
 
-    if (index == records.length) {
-        var params = {
+function uploadSearchDocuments(context, searchDocuments) {
+	if(searchDocuments.length > 0) {
+		var params = {
             contentType : 'application/json',
-            documents : JSON.stringify(batchDocuments)
+            documents : JSON.stringify(searchDocuments)
         };
+        
         cloudSearchDomain.uploadDocuments(params, function(error, result) {
             if(!error) {
-                context.succeed("Processed " + records.length + " records.");
+                context.succeed("Processed " + searchDocuments.length + " search records.");
                 return;
-            }
-            else {
-                context.fail(new Error('error "' + error + '"'));
+            }else {
+                context.fail(new Error('Unable to upload search documents: "' + createPhotoEvent.id + '"'));
                 return;
             }
         });
-    } else {
-        record = records[index];
-    
-        if (record !== undefined && record.eventName === "INSERT") {
-            var insertSearchDocument = {
-                type : 'add',
-                id : record.dynamodb.Keys.photoId.S,
-                fields : {
-                    user_id : record.dynamodb.Keys.userId.S,
-                    headline : record.dynamodb.NewImage.headline.S,
-                    s3_url : record.dynamodb.NewImage.s3Url.S
-                }
-            };
-            batchDocuments.push(insertSearchDocument);
-            processSearchRecord(context, index+1, records);
-        } else {
-            processSearchRecord(context, index+1, records);
-        }
-    }
-
-
+	} else {
+		context.succeed("No new documents were added to the DynamoDB Table.");
+	}	
 }

@@ -11,15 +11,13 @@ exports.handler = function(event, context) {
     cloudSearchDomain.search(params, function(err, data) {
       if (err) {
         context.fail(new Error('error "' + err + '"'));// an error occurred
-      } 
-      else {
+      } else {
         context.succeed(processSearchResults(data));
       }               
-    });
+    }); 
 }
 
-function processSearchResults(data) {
-    
+function processSearchResults(data) { 
     //Set base response type
     var response = {}
     response.success = true;
@@ -28,7 +26,6 @@ function processSearchResults(data) {
     var hits = data.hits.hit;
     
     for (var i=0; i < hits.length; i++) {
-        
         //retrieve the next notes
         var currentMatch = hits[i];
         var note = {};
@@ -43,5 +40,4 @@ function processSearchResults(data) {
     
     response.notes = searchResults;
     return response;
-
 }
