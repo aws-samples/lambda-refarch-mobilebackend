@@ -1,0 +1,260 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS CloudFormation Template for VoteApp: Builds DynamoDB tables, an S3 bucket, and Lambda functions for use in a real-time voting application. ** This template creates multiple AWS resources. You will be billed for the AWS resources used if you create a stack from this template.",
+    "Parameters": {
+        "LambdaSourceBucket": {
+            "Type": "String",
+            "Description": "Name of S3 bucket where Lambda function packages are stored.",
+            "Default": "awslambda-reference-architectures"
+        },
+        "LambdaMobileSearchS3Key": {
+            "Type": "String",
+            "Default": "cloudsearchapi.zip",
+            "Description": "Name of S3 key for ZIP with Lambda function package that receives votes."
+        },
+        "LambdaNotesApiS3Key": {
+            "Type": "String",
+            "Default": "photonotesapi.zip",
+            "Description": "Name of S3 key for ZIP with Lambda function package that aggregates votes."
+        },
+        "LambdaDynamoStreamsS3Key": {
+            "Type": "String",
+            "Default": "searchstreams.zip",
+            "Description": "Name of S3 key for ZIP with Lambda function package that aggregates votes."
+        }
+    },
+    "Resources": {
+        "LambdaMobileCoreApiFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": {
+                        "Ref": "LambdaSourceBucket"
+                    },
+                    "S3Key": {
+                        "Ref": "LambdaNotesApiS3Key"
+                    }
+                },
+                "Runtime": "nodejs",
+                "Description": "Receives mobile requests and stores in dynamodb",
+                "Handler": "index.handler",
+                "Role": {
+                    "Fn::GetAtt": [
+                        "LambdaExecDynamoRole",
+                        "Arn"
+                    ]
+                },
+                "Timeout": "30"
+            }
+        },
+        "LambdaMobileSearchApiFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": {
+                        "Ref": "LambdaSourceBucket"
+                    },
+                    "S3Key": {
+                        "Ref": "LambdaMobileSearchS3Key"
+                    }
+                },
+                "Runtime": "nodejs",
+                "Description": "Receives search api requests and returns first matching result",
+                "Handler": "index.handler",
+                "Role": {
+                    "Fn::GetAtt": [
+                        "LambdaExecCloudsearchApiRole",
+                        "Arn"
+                    ]
+                },
+                "Timeout": "30"
+            }
+        },
+        "LambdaDynamoStreamsApiFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": {
+                        "Ref": "LambdaSourceBucket"
+                    },
+                    "S3Key": {
+                        "Ref": "LambdaDynamoStreamsS3Key"
+                    }
+                },
+                "Runtime": "nodejs",
+                "Description": "Receives updates from dynamoDB streams and pushes them to cloudSearch",
+                "Handler": "index.handler",
+                "Role": {
+                    "Fn::GetAtt": [
+                        "LambdaExecDynamoStreamsRole",
+                        "Arn"
+                    ]
+                },
+                "Timeout": "30"
+            }
+        },
+        "LambdaExecDynamoRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "lambda_dynamo_exec_role_photoapp",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "logs:CreateLogGroup",
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:logs:*:*:*"
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "dynamodb:GetItem",
+                                        "dynamodb:PutItem",
+                                        "dynamodb:Query",
+                                        "dynamodb:UpdateItem"
+                                    ],
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "LambdaExecCloudsearchApiRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "lambda_cloudsearch_exec_role_photoapp",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "lambda:InvokeFunction"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "logs:CreateLogGroup",
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:logs:*:*:*"
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "cloudsearch:search",
+                                        "cloudsearch:suggest"
+                                    ],
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "LambdaExecDynamoStreamsRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "lambda_dynamostreams_exec_role_photoapp",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "lambda:InvokeFunction"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "cloudsearch:*"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "dynamodb:GetRecords",
+                                        "dynamodb:GetShardIterator",
+                                        "dynamodb:DescribeStream",
+                                        "dynamodb:ListStreams",
+                                        "logs:CreateLogGroup",
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

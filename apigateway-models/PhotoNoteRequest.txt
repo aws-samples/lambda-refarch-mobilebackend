@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "PhotoNoteRequest",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "headline": { "type": "string" },
+    "s3Url": { "type": "string" },
+    "requestMethod": { "type": "string" }
+  }
+}

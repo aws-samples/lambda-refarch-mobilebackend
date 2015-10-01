@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "PhotoNotesResponse",
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean" },
+    "notes": {
+      "type": "array",
+      "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "userId": { "type": "number" },
+              "headline": { "type": "number" },
+              "s3Url": { "type": "number" }
+            }
+        }
+    }
+  }
+}
