@@ -53,7 +53,7 @@ In order to illustrate the end to end process, you can integrate with the sample
 
 Step 1 - Visit the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) in your AWS account and create one new resource endpoint for `/notes`. Assign a POST method for the `/photos` endpoint. Select the `Integration Request` type of “Lambda Function”. Configure the notes endpoint to use the Lambda notes-data-function created from the CloudFormation script.
 
-Under `Models` section, create a CreateNoteRequest model and a CreateNoteResponse model using [these json templates](https://github.com/awslabs/lambda-refarch-mobilebackend/blob/master/apigateway-templates/).
+Under `Models` section, create a CreateNoteRequest model and a CreateNoteResponse model using [these json templates](https://github.com/awslabs/lambda-refarch-mobilebackend/tree/master/apigateway-models).
 
 Under `Method Request` for the method execution, enable API Key Required and assign the CreateNoteRequest model that was created earlier as the `Request Model`. 
 
