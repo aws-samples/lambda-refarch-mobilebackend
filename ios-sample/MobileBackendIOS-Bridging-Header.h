@@ -10,3 +10,6 @@
 #import <AWSCore/AWSCore.h>
 #import <AWSS3/AWSS3.h>
 
+// Import of API Gateway
+#import "APINotesApiClient.h"
+#import "APICreateNoteRequest.h"

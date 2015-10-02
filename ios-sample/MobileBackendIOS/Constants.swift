@@ -9,10 +9,11 @@ import Foundation
 let CognitoRegionType = AWSRegionType.USEast1
 let DefaultServiceRegionType = AWSRegionType.USEast1
 let CognitoIdentityPoolId = ""
-let APIGatewayKey = ""
 let CognitoUnauthenticatedRoleArn = ""
 let CognitoAuthenticatedRoleArn = ""
 let AWSAccountId = ""
+let APIGatewayKey = ""
+let APIGatewayEndpointUrl = ""
 let S3BucketName: String = ""
 
 

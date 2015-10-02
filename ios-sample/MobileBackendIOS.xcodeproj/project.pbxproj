@@ -14,9 +14,12 @@
 		CA66EDD61BB84C6F00CDC29D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA66EDD51BB84C6F00CDC29D /* Assets.xcassets */; };
 		CA66EDD91BB84C6F00CDC29D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA66EDD71BB84C6F00CDC29D /* LaunchScreen.storyboard */; };
 		CA66EE111BB8776C00CDC29D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA66EE101BB8776C00CDC29D /* Constants.swift */; settings = {ASSET_TAGS = (); }; };
-		CA66EE181BB8909600CDC29D /* PhotoNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA66EE171BB8909600CDC29D /* PhotoNote.swift */; settings = {ASSET_TAGS = (); }; };
 		CA66EE211BB8A60800CDC29D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA66EE201BB8A60800CDC29D /* MobileCoreServices.framework */; };
-		CAEE1A151BBD02E0003A2A12 /* AwsMobileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEE1A141BBD02E0003A2A12 /* AwsMobileService.swift */; settings = {ASSET_TAGS = (); }; };
+		CAA95B601BBDF69C00342450 /* APICreateNoteRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CAA95B5D1BBDF69C00342450 /* APICreateNoteRequest.m */; settings = {ASSET_TAGS = (); }; };
+		CAA95B611BBDF69C00342450 /* APICreateNoteResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = CAA95B5F1BBDF69C00342450 /* APICreateNoteResponse.m */; settings = {ASSET_TAGS = (); }; };
+		CAE448EE1BBDC045006CE308 /* UploadPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE448ED1BBDC045006CE308 /* UploadPhotoViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		CAE4490E1BBDD955006CE308 /* APINotesApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE449051BBDD955006CE308 /* APINotesApiClient.m */; settings = {ASSET_TAGS = (); }; };
+		CAEE1A151BBD02E0003A2A12 /* MobileBackendApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEE1A141BBD02E0003A2A12 /* MobileBackendApi.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,9 +33,15 @@
 		CA66EDDA1BB84C6F00CDC29D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA66EE101BB8776C00CDC29D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CA66EE121BB878EE00CDC29D /* MobileBackendIOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MobileBackendIOS-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
-		CA66EE171BB8909600CDC29D /* PhotoNote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoNote.swift; sourceTree = "<group>"; };
 		CA66EE201BB8A60800CDC29D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		CAEE1A141BBD02E0003A2A12 /* AwsMobileService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AwsMobileService.swift; sourceTree = "<group>"; };
+		CAA95B5C1BBDF69C00342450 /* APICreateNoteRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APICreateNoteRequest.h; sourceTree = "<group>"; };
+		CAA95B5D1BBDF69C00342450 /* APICreateNoteRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APICreateNoteRequest.m; sourceTree = "<group>"; };
+		CAA95B5E1BBDF69C00342450 /* APICreateNoteResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APICreateNoteResponse.h; sourceTree = "<group>"; };
+		CAA95B5F1BBDF69C00342450 /* APICreateNoteResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APICreateNoteResponse.m; sourceTree = "<group>"; };
+		CAE448ED1BBDC045006CE308 /* UploadPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadPhotoViewController.swift; sourceTree = "<group>"; };
+		CAE449041BBDD955006CE308 /* APINotesApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APINotesApiClient.h; sourceTree = "<group>"; };
+		CAE449051BBDD955006CE308 /* APINotesApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APINotesApiClient.m; sourceTree = "<group>"; };
+		CAEE1A141BBD02E0003A2A12 /* MobileBackendApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MobileBackendApi.swift; sourceTree = "<group>"; };
 		EF76C26D1FF479AE75BE622C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F343C6EDC695BA46F497006E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,11 +98,10 @@
 		CA66EDCD1BB84C6F00CDC29D /* MobileBackendIOS */ = {
 			isa = PBXGroup;
 			children = (
-				CA66EE221BB8EBB300CDC29D /* APIGateway */,
+				CAEE1A141BBD02E0003A2A12 /* MobileBackendApi.swift */,
 				CA66EE101BB8776C00CDC29D /* Constants.swift */,
-				CAEE1A141BBD02E0003A2A12 /* AwsMobileService.swift */,
-				CA66EE171BB8909600CDC29D /* PhotoNote.swift */,
-				CA66EDD01BB84C6F00CDC29D /* AddNoteViewController.swift */,
+				CAE448EC1BBDC021006CE308 /* Controllers */,
+				CA66EE221BB8EBB300CDC29D /* APIGateway */,
 				CA66EDCE1BB84C6F00CDC29D /* AppDelegate.swift */,
 				CA66EDD21BB84C6F00CDC29D /* Main.storyboard */,
 				CA66EDD51BB84C6F00CDC29D /* Assets.xcassets */,
@@ -107,8 +115,23 @@
 		CA66EE221BB8EBB300CDC29D /* APIGateway */ = {
 			isa = PBXGroup;
 			children = (
+				CAA95B5C1BBDF69C00342450 /* APICreateNoteRequest.h */,
+				CAA95B5D1BBDF69C00342450 /* APICreateNoteRequest.m */,
+				CAA95B5E1BBDF69C00342450 /* APICreateNoteResponse.h */,
+				CAA95B5F1BBDF69C00342450 /* APICreateNoteResponse.m */,
+				CAE449041BBDD955006CE308 /* APINotesApiClient.h */,
+				CAE449051BBDD955006CE308 /* APINotesApiClient.m */,
 			);
 			name = APIGateway;
+			sourceTree = "<group>";
+		};
+		CAE448EC1BBDC021006CE308 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CA66EDD01BB84C6F00CDC29D /* AddNoteViewController.swift */,
+				CAE448ED1BBDC045006CE308 /* UploadPhotoViewController.swift */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,9 +240,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA66EDD11BB84C6F00CDC29D /* AddNoteViewController.swift in Sources */,
-				CAEE1A151BBD02E0003A2A12 /* AwsMobileService.swift in Sources */,
-				CA66EE181BB8909600CDC29D /* PhotoNote.swift in Sources */,
+				CAA95B611BBDF69C00342450 /* APICreateNoteResponse.m in Sources */,
+				CAEE1A151BBD02E0003A2A12 /* MobileBackendApi.swift in Sources */,
 				CA66EDCF1BB84C6F00CDC29D /* AppDelegate.swift in Sources */,
+				CAE448EE1BBDC045006CE308 /* UploadPhotoViewController.swift in Sources */,
+				CAA95B601BBDF69C00342450 /* APICreateNoteRequest.m in Sources */,
+				CAE4490E1BBDD955006CE308 /* APINotesApiClient.m in Sources */,
 				CA66EE111BB8776C00CDC29D /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

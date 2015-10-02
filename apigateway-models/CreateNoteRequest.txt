@@ -1,9 +1,9 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "PhotoNoteRequest",
+  "title": "CreateNoteRequest",
   "type": "object",
   "properties": {
-    "id": { "type": "string" },
+    "noteId": { "type": "string" },
     "headline": { "type": "string" },
     "text": { "type": "string" }
   }
