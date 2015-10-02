@@ -31,7 +31,7 @@ delete these resources after deleting the CloudFormation Stacks.
 
 Step 1 – Create an AWS CloudFormation Stack with Template One and copy the S3 Bucket name and CloudFront Url from the CloudFormation Output.
 
-Step 2 – Create a CloudSearch Domain using the AWS Console.(https://console.aws.amazon.com/cloudsearch/home?region=us-east-1). Create a manual index containing attributes for headline, s3_url, user_id similar to the diagram below:
+Step 2 – Create a CloudSearch Domain using the AWS Console.(https://console.aws.amazon.com/cloudsearch/home?region=us-east-1). Create a manual index containing attributes for headline and note_text similar to the diagram below:
 
 ![Alt text](assets/cloudsearch-attributes.png?raw=true “CloudSearch Attributes”)
 
@@ -40,8 +40,6 @@ Step 3 – Update the following environment variables in each lambda function ba
 	a   CLOUDSEARCH_DOCUMENT_ENDPOINT in streams-data-function/index.js with the Document Endpoint of CloudSearch
 
 	b   CLOUDSEARCH_SEARCH_ENDPOINT in search-data-function/index.js with the Search Endpoint of CloudSearch
-
-	c   CLOUDFRONT_URL in notes-data-function/index.js with the CloudFront output from CloudFormation Template One
 
 Step 4 – Upload a zip file of each lambda function to S3 and create an AWS Cloudformation Stack with Template Two
 

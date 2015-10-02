@@ -1,16 +1,15 @@
 var AWS = require('aws-sdk');
 var cloudSearchDomain = new AWS.CloudSearchDomain({endpoint : 'CLOUDSEARCH_DOCUMENT_ENDPOINT'});
 
-
 exports.handler = function(event, context) {
 	var records = event.Records;
 	var searchDocuments = createSearchDocuments(records);
 	
     uploadSearchDocuments(context, searchDocuments);
-}
+};
 
 function createSearchDocuments(records) {
-	var searchDocuments = []
+	var searchDocuments = [];
 	
 	for(var i = 0; i<records.length; i++) {
  		var record = records[i];
@@ -18,12 +17,12 @@ function createSearchDocuments(records) {
  		if (record.eventName === "INSERT") {
        		var searchDocument = {
             	type : 'add',
-            	id : record.dynamodb.Keys.photoId.S,
+            	id : record.dynamodb.Keys.noteId.S,
             	fields : {
-                	user_id : record.dynamodb.Keys.userId.S,
                 	headline : record.dynamodb.NewImage.headline.S,
-                	s3_url : record.dynamodb.NewImage.s3Url.S
-            }
+                	note_text : record.dynamodb.NewImage.text.S
+            	}
+            };
         	searchDocuments.push(searchDocument);
     	} 
 	}	
@@ -42,7 +41,7 @@ function uploadSearchDocuments(context, searchDocuments) {
                 context.succeed("Processed " + searchDocuments.length + " search records.");
                 return;
             }else {
-                context.fail(new Error('Unable to upload search documents: "' + createPhotoEvent.id + '"'));
+                context.fail(new Error('Unable to upload search documents: "' + searchDocuments + '"'));
                 return;
             }
         });

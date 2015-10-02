@@ -58,29 +58,21 @@
             "Properties": {
                 "AttributeDefinitions": [
                     {
-                        "AttributeName": "photoId",
-                        "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "userId",
+                        "AttributeName": "noteId",
                         "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
                     {
-                        "AttributeName": "userId",
+                        "AttributeName": "noteId",
                         "KeyType": "HASH"
-                    },
-                    {
-                        "AttributeName": "photoId",
-                        "KeyType": "RANGE"
                     }
                 ],
                 "ProvisionedThroughput": {
                     "ReadCapacityUnits": "10",
                     "WriteCapacityUnits": "10"
                 },
-                "TableName" : "FunDemo"
+                "TableName" : "Notes"
             }
         },
         "S3mobileuseruploads": {
@@ -90,7 +82,7 @@
                 "AccessControl": "PublicRead"
             }
         }
-    }
+    },
     "Outputs": {
     	"S3BucketName": {
       		"Description": "Storage location for mobile uploads",

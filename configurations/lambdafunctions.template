@@ -43,8 +43,7 @@
                         "LambdaExecDynamoRole",
                         "Arn"
                     ]
-                },
-                "Timeout": "30"
+                }
             }
         },
         "LambdaMobileSearchApiFunction": {
@@ -66,8 +65,7 @@
                         "LambdaExecCloudsearchApiRole",
                         "Arn"
                     ]
-                },
-                "Timeout": "30"
+                }
             }
         },
         "LambdaDynamoStreamsApiFunction": {
@@ -89,8 +87,7 @@
                         "LambdaExecDynamoStreamsRole",
                         "Arn"
                     ]
-                },
-                "Timeout": "30"
+                }
             }
         },
         "LambdaExecDynamoRole": {

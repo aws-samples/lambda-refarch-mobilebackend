@@ -10,9 +10,8 @@
             "type": "object",
             "properties": {
               "id": { "type": "string" },
-              "userId": { "type": "number" },
-              "headline": { "type": "number" },
-              "s3Url": { "type": "number" }
+              "text": { "type": "string" },
+              "headline": { "type": "string" }
             }
         }
     }
