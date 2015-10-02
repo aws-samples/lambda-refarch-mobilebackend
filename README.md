@@ -30,7 +30,7 @@ delete these resources after deleting the AWS CloudFormation stacks.
 
 Step 1 – Create an AWS CloudFormation stack with Template One and copy the Amazon S3 bucket name and CloudFront URL from the AWS CloudFormation output.
 
-Step 2 – Create a CloudSearch domain using the [AWS console](https://console.aws.amazon.com/cloudsearch/home?region=us-east-1). Create a manual index containing attributes for headline, s3_url, user_id similar to the diagram below:
+Step 2 – Create a CloudSearch domain using the [AWS console](https://console.aws.amazon.com/cloudsearch/home?region=us-east-1). Create a manual index containing attributes for headline and note_text similar to the diagram below:
 
 ![Alt text](assets/cloudsearch-attributes.png?raw=true “CloudSearch Attributes”)
 
@@ -50,7 +50,7 @@ Step 6 - Create a new Amazon Cognito identity pool through the [Amazon Cognito d
 
 In order to illustrate the end to end process, you can integrate with the sample mobile application available. The sample mobile application is built for iOS, and requires creating an API Gateway endpoint. The steps for integrating the SDK are described below:
 
-Step 1 - Visit the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) in your AWS account and create one new resource endpoint for `/notes`. Assign a POST method for the `/photos` endpoint. Select the `Integration Request` type of “Lambda Function”. Configure the notes endpoint to use the Lambda notes-data-function created from the CloudFormation script.
+Step 1 - Visit the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) in your AWS account and create one new resource endpoint for `/notes`. Assign a POST method for the `/notes` endpoint. Select the `Integration Request` type of “Lambda Function”. Configure the notes endpoint to use the Lambda notes-data-function created from the CloudFormation script.
 
 Under `Models` section, create a CreateNoteRequest model and a CreateNoteResponse model using [these json templates](https://github.com/awslabs/lambda-refarch-mobilebackend/tree/master/apigateway-models).
 

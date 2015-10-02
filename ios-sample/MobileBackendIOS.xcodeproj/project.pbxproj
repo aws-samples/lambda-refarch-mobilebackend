@@ -163,7 +163,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0700;
-				ORGANIZATIONNAME = "Olawale Oladehin";
+				ORGANIZATIONNAME = "Amazon Web Services";
 				TargetAttributes = {
 					CA66EDCA1BB84C6F00CDC29D = {
 						CreatedOnToolsVersion = 7.0;
@@ -361,7 +361,7 @@
 				INFOPLIST_FILE = MobileBackendIOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ooladehin.MobileBackendIOS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.awslabs.MobileBackendIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MobileBackendIOS-Bridging-Header.h";
 			};
