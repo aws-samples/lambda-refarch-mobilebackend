@@ -3,17 +3,17 @@ var cloudSearchDomain = new AWS.CloudSearchDomain({endpoint : 'CLOUDSEARCH_SEARC
 
 exports.handler = function(event, context) {
     var params = {
-      query: event.searchTerm, 
-      size: 10,
-      start: 0
+        query: event.searchTerm, 
+        size: 10,
+        start: 0
     };
     
     cloudSearchDomain.search(params, function(err, data) {
-      if (err) {
-        context.fail(new Error('Error searching for documents with term: "' + event.searchTerm + '"'));// an error occurred
-      } else {
-        context.succeed(processSearchResults(data));
-      }               
+        if (err) {
+            context.fail(new Error('Error searching for documents with term: "' + event.searchTerm + '"'));// an error occurred
+        } else {
+            context.succeed(processSearchResults(data));
+        }               
     }); 
 };
 
