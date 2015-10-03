@@ -7,8 +7,8 @@ import Foundation
 import UIKit
 import MobileCoreServices
 
-class AddNoteViewController: UIViewController{
-
+class AddNoteViewController: UIViewController {
+    
     @IBOutlet weak var headlineTextField: UITextField!
     @IBOutlet weak var noteTextField: UITextField!
     
@@ -26,5 +26,6 @@ class AddNoteViewController: UIViewController{
             print("Error text fields are nil")
         }
     }
+    
 }
 

@@ -101,4 +101,5 @@ class UploadPhotoViewController: UIViewController,UIImagePickerControllerDelegat
     private func isPhotoCameraAvailable() -> Bool{
         return UIImagePickerController.isSourceTypeAvailable(.Camera)
     }
+    
 }
