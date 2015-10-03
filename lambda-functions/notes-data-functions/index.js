@@ -2,11 +2,14 @@ var doc = require('dynamodb-doc');
 var dynamo = new doc.DynamoDB();
 
 exports.handler = function(createNoteEvent, context) {
-    var note = {};
-    note.TableName = "Notes";
-    note.Item = {noteId : createNoteEvent.noteId,
-                 headline : createNoteEvent.headline,
-                 text: createNoteEvent.text};
+    var note = {
+        TableName : "Notes",
+        Item : {
+            noteId : createNoteEvent.noteId,
+            headline : createNoteEvent.headline,
+            text: createNoteEvent.text
+        }
+    };
 
     dynamo.putItem(note, function(err,savedNote) { 
         if(err) {

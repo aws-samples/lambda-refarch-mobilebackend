@@ -19,8 +19,9 @@ exports.handler = function(event, context) {
 
 function processSearchResults(data) { 
     //Set base response type
-    var response = {};
-    response.success = true;
+    var response = {
+        success : true
+    };
     
     var searchResults = [];
     var hits = data.hits.hit;
