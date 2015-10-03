@@ -12,20 +12,20 @@ function createSearchDocuments(records) {
     var searchDocuments = [];
 	
     for(var i = 0; i<records.length; i++) {
-	    var record = records[i];
+        var record = records[i];
 		
-	    if (record.eventName === "INSERT") {
+        if (record.eventName === "INSERT") {
             var searchDocument = {
                 type : 'add',
                 id : record.dynamodb.Keys.noteId.S,
-			    fields : {
+                fields : {
                     headline : record.dynamodb.NewImage.headline.S,
                     note_text : record.dynamodb.NewImage.text.S
-				}
-			};
+                }
+            };
             searchDocuments.push(searchDocument);
-        } 
-    }   
+        }
+    }
     return searchDocuments;
 }
 
@@ -39,10 +39,8 @@ function uploadSearchDocuments(context, searchDocuments) {
         cloudSearchDomain.uploadDocuments(params, function(error, result) {
             if(!error) {
                 context.succeed("Processed " + searchDocuments.length + " search records.");
-                return;
-            }else {
+            } else {
                 context.fail(new Error('Unable to upload search documents: "' + searchDocuments + '"'));
-                return;
             }
         });
     } else {
