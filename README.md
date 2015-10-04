@@ -1,5 +1,6 @@
 # AWS Lambda Reference Architecture: Mobile Backends
 
+AWS Lambda Reference Architecture for creating a Mobile Backend. You can build backends using AWS Lambda and Amazon API Gateway to authenticate and process API requests. Lambda makes it easy to create rich, personalized app experiences.  The architecture described in this [diagram](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/lambda-refarch-mobilebackend.pdf) can be created with a CloudFormation template.
 
 [Template One](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backends/lambda_data_stores.template)
 does the following:
