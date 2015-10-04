@@ -1,0 +1,4 @@
+AWS Lambda Reference Architecture:  Mobile Backend
+lambda-refarch-mobilebackend
+Copyright 2015 Amazon.com, Inc. or its affiliates. 
+All Rights Reserved. 
