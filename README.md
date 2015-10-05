@@ -44,13 +44,14 @@ Step 4 – Upload a .zip file of each lambda function to Amazon S3 and create an
 
 Step 5 – Add the created DynamoDB table as an event source for your streams-data-function in the [AWS console](https://console.aws.amazon.com/lambda/home?region=us-east-1).
 
-Step 6 - Create a new Amazon Cognito identity pool through the [Amazon Cognito dashboard](https://console.aws.amazon.com/cognito/home) for unauthenticated users. Modify the policy document to allow unauthenticated users to "execute-api:*" for API Gateway. Modify the policy document to allow users to upload to the S3 bucket created in Template One. 
 
 ## Instructions for Integrating Mobile Application
 
 In order to illustrate the end-to-end process, you can integrate with the sample mobile application available. The sample mobile application is built for iOS and requires creating a mobile SDK. The steps for integrating the SDK are described below:
 
-Step 1 - Visit the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) in your AWS account and create a new resource endpoints for `/notes`. Assign a POST method for the `/notes` endpoint. For the method, select the `Integration Request` type of “Lambda Function.” Configure the notes endpoint to use the notes-data-function.
+Step 1 - Create a new Amazon Cognito identity pool through the [Amazon Cognito dashboard](https://console.aws.amazon.com/cognito/home) for unauthenticated users. Modify the policy document to allow unauthenticated users to "execute-api:*" for API Gateway. Modify the policy document to allow users to upload to the S3 bucket created in Template One. 
+
+Step 2 - Visit the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) in your AWS account and create a new resource endpoints for `/notes`. Assign a POST method for the `/notes` endpoint. For the method, select the `Integration Request` type of “Lambda Function.” Configure the notes endpoint to use the notes-data-function.
 
 Under `Models` section, create a CreateNoteRequest and a CreateNoteResponse model using [these JSON templates ](https://github.com/awslabs/lambda-refarch-mobilebackend/tree/master/apigateway-models).
 
@@ -58,17 +59,17 @@ Under `Method Request` for the method execution, enable API key required and ass
 
 Under `Method Response` for the method exectuion, for a 200 response code select a content type of `application/json` and use the CreateNoteResponse model that was created earlier.
 
-Step 2 - In the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) create an API key for API Gateway and then deploy the API Gateway in order to copy the deployment endpoint url.
+Step 3 - In the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) create an API key for API Gateway and then deploy the API Gateway in order to copy the deployment endpoint url.
 
-Step 3 - Install and run [cocoapods](https://guides.cocoapods.org/using/getting-started.html) on the Command Line Interface:
+Step 4 - Install and run [cocoapods](https://guides.cocoapods.org/using/getting-started.html) on the Command Line Interface:
 
 ```bash
 $ pod install
 ```
 
-Step 4 - Open the Constants.swift file and add the Account Id, S3 bucket, Amazon Cognito identity pool, Amazon Cognito identity users, API key, and API Gateway endpoint as constants.
+Step 5 - Open the Constants.swift file and add the Account Id, S3 bucket, Amazon Cognito identity pool, Amazon Cognito identity users, API key, and API Gateway endpoint as constants.
 
-Step 5 - Run the mobile application in the simulator. Choose a photo and upload it to S3. Then view the iamge is uploaded in Amazon S3, and then use the Amazon CloudFront Distribution url to view the image through the CDN. Then select the button to add a note in the iOS application. Add a note in the mobile application and save. Then view DynamoDB to see the note added to the Notes Table. View the CloudSearch domain to see a document added to your search index. Review the Amazon CloudWatch Log events from the streams Lambda function for evidence that the functions are pulling data as mobile users are publishing.
+Step 6 - Run the mobile application in the simulator. Choose a photo and upload it to S3. Then view the iamge is uploaded in Amazon S3, and then use the Amazon CloudFront Distribution url to view the image through the CDN. Then select the button to add a note in the iOS application. Add a note in the mobile application and save. Then view DynamoDB to see the note added to the Notes Table. View the CloudSearch domain to see a document added to your search index. Review the Amazon CloudWatch Log events from the streams Lambda function for evidence that the functions are pulling data as mobile users are publishing.
 
 ## Conclusion
 
