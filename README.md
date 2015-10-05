@@ -28,7 +28,7 @@ functions to write output to Amazon CloudWatch Logs, store data in DynamoDB, rea
 **Important:** CloudSearch, API Gateway, and DynamoDB Streams will be configured through the console. During cleanup, you will need to manually delete these resources after deleting the AWS CloudFormation Stacks. The provided CloudFormation template retreives its Lambda code from a bucket in the us-east-1 region. To launch this sample in another region, please modify the template and upload the Lambda code to a bucket in that region. 
 
 
-Step 1 – Create an AWS CloudFormation Stack with Template One and copy the S3 bucket name and CloudFront URL from the AWS CloudFormation output.
+Step 1 – Create an AWS CloudFormation Stack with Template One and copy the S3 bucket name from the AWS CloudFormation output.
 
 Step 2 – Create a CloudSearch domain using the [AWS console](https://console.aws.amazon.com/cloudsearch/home?region=us-east-1). Create a manual index containing attributes for headline, s3_url, user_id similar to the diagram below:
 
@@ -40,8 +40,6 @@ a   CLOUDSEARCH_DOCUMENT_ENDPOINT in streams-data-function/index.js with the Doc
 
 b   CLOUDSEARCH_SEARCH_ENDPOINT in search-data-function/index.js with the Search Endpoint of CloudSearch
 
-c   CLOUDFRONT_URL in notes-data-function/index.js with the CloudFront output from AWS CloudFormation Template One
-
 Step 4 – Upload a .zip file of each lambda function to Amazon S3 and create an AWS Cloudformation Stack with Template Two.
 
 Step 5 – Add the created DynamoDB table as an event source for your streams-data-function in the [AWS console](https://console.aws.amazon.com/lambda/home?region=us-east-1).
@@ -52,17 +50,15 @@ Step 6 - Create a new Amazon Cognito identity pool through the [Amazon Cognito d
 
 In order to illustrate the end-to-end process, you can integrate with the sample mobile application available. The sample mobile application is built for iOS and requires creating a mobile SDK. The steps for integrating the SDK are described below:
 
-Step 1 - Visit the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) in your AWS account and create two new resource endpoints for `/photos` and `search`. Assign a POST method for the `/photos` endpoint and a GET method for the `search` endpoint. For each method, select the `Integration Request` type of “Lambda Function.” Configure the photos endpoint to use the notes-data-function, and configure the search endpoint to use the search-data-function both created from the AWS CloudFormation script.
+Step 1 - Visit the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) in your AWS account and create a new resource endpoints for `/notes`. Assign a POST method for the `/notes` endpoint. For the method, select the `Integration Request` type of “Lambda Function.” Configure the notes endpoint to use the notes-data-function.
 
-Under `Models` section, create a PhotoNoteRequest and a PhotoNotesResponse model using [these JSON templates ](https://github.com/awslabs/lambda-refarch-mobilebackend/blob/master/apigateway-templates/).
+Under `Models` section, create a CreateNoteRequest and a CreateNoteResponse model using [these JSON templates ](https://github.com/awslabs/lambda-refarch-mobilebackend/tree/master/apigateway-models).
 
-Under `Method Request` for each method execution, enable AWS_IAM authorization, API key required, and assign the PhotoNotesResponse model that was created earlier as the `Request Model`. 
+Under `Method Request` for the method execution, enable API key required and assign the CreateNoteRequest model that was created earlier as the `Request Model`. 
 
-Under `Integration Request` for both method execution, enable `Invoke with caller credentials` in order to pass Amazon Cognito IAM identities through API Gateway.
+Under `Method Response` for the method exectuion, for a 200 response code select a content type of `application/json` and use the CreateNoteResponse model that was created earlier.
 
-Under `Method Response` for both method executions, for a 200 response code select a content type of `application/json` and use the PhotoNotesResponse model that was created earlier.
-
-Step 2 - In the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) create an API key for API Gateway and then download an iOS SDK and copy the SDK files into the ‘APIGateway’ folder of the iOS application.
+Step 2 - In the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) create an API key for API Gateway and then deploy the API Gateway in order to copy the deployment endpoint url.
 
 Step 3 - Install and run [cocoapods](https://guides.cocoapods.org/using/getting-started.html) on the Command Line Interface:
 
@@ -70,9 +66,9 @@ Step 3 - Install and run [cocoapods](https://guides.cocoapods.org/using/getting-
 $ pod install
 ```
 
-Step 4 - Open the Constants.swift file and add the S3 bucket, Amazon Cognito identity pool, Amazon Cognito identity users, and API key as constants.
+Step 4 - Open the Constants.swift file and add the Account Id, S3 bucket, Amazon Cognito identity pool, Amazon Cognito identity users, API key, and API Gateway endpoint as constants.
 
-Step 5 - Run the mobile application in the simulator. Choose a photo and add a headline to  the note. Then view DynamoDB to see the photo note added to the mobile storage. View the CloudSearch domain to see a document added to your search index. Review the Amazon CloudWatch Log events from the streams Lambda function for evidence that the functions are pulling data as mobile users are publishing.
+Step 5 - Run the mobile application in the simulator. Choose a photo and upload it to S3. Then view the iamge is uploaded in Amazon S3, and then use the Amazon CloudFront Distribution url to view the image through the CDN. Then select the button to add a note in the iOS application. Add a note in the mobile application and save. Then view DynamoDB to see the note added to the Notes Table. View the CloudSearch domain to see a document added to your search index. Review the Amazon CloudWatch Log events from the streams Lambda function for evidence that the functions are pulling data as mobile users are publishing.
 
 ## Conclusion
 

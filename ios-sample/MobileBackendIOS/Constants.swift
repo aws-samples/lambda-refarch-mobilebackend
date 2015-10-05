@@ -13,7 +13,7 @@ let CognitoUnauthenticatedRoleArn = ""
 let CognitoAuthenticatedRoleArn = ""
 let AWSAccountId = ""
 let APIGatewayKey = ""
-let APIGatewayEndpointUrl = ""
+let APIEndpointUrl = ""
 let S3BucketName: String = ""
 
 
