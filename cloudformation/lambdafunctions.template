@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "AWS CloudFormation Template for VoteApp: Builds DynamoDB tables, an S3 bucket, and Lambda functions for use in a real-time voting application. ** This template creates multiple AWS resources. You will be billed for the AWS resources used if you create a stack from this template.",
+    "Description": "AWS CloudFormation Template for Mobile Backend Reference Architecture: Builds DynamoDB tables, an S3 bucket, and Lambda functions for use in a real-time voting application. ** This template creates multiple AWS resources. You will be billed for the AWS resources used if you create a stack from this template.",
     "Parameters": {
         "LambdaSourceBucket": {
             "Type": "String",
@@ -9,18 +9,18 @@
         },
         "LambdaMobileSearchS3Key": {
             "Type": "String",
-            "Default": "cloudsearchapi.zip",
-            "Description": "Name of S3 key for ZIP with Lambda function package that receives votes."
+            "Default": "mobile-backend/cloudsearchapi.zip",
+            "Description": "Name of S3 key for ZIP with Lambda function package for querying CloudSearch."
         },
         "LambdaNotesApiS3Key": {
             "Type": "String",
-            "Default": "photonotesapi.zip",
-            "Description": "Name of S3 key for ZIP with Lambda function package that aggregates votes."
+            "Default": "mobile-backend/photonotesapi.zip",
+            "Description": "Name of S3 key for ZIP with Lambda function package for sending mobile data to DDB."
         },
         "LambdaDynamoStreamsS3Key": {
             "Type": "String",
-            "Default": "searchstreams.zip",
-            "Description": "Name of S3 key for ZIP with Lambda function package that aggregates votes."
+            "Default": "mobile-backend/searchstreams.zip",
+            "Description": "Name of S3 key for ZIP with Lambda function package for sending data to CloudSearch."
         }
     },
     "Resources": {
