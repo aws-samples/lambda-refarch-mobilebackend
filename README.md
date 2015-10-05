@@ -25,8 +25,7 @@ functions to write output to Amazon CloudWatch Logs, store data in DynamoDB, rea
 
 ## Instructions for Creating Mobile Backend
 
-**Important:** CloudSearch, API Gateway, and DynamoDB Streams will be configured through the console. During cleanup, you will need to manually
-delete these resources after deleting the AWS CloudFormation Stacks.
+**Important:** CloudSearch, API Gateway, and DynamoDB Streams will be configured through the console. During cleanup, you will need to manually delete these resources after deleting the AWS CloudFormation Stacks. The provided CloudFormation template retreives its Lambda code from a bucket in the us-east-1 region. To launch this sample in another region, please modify the template and upload the Lambda code to a bucket in that region. 
 
 
 Step 1 – Create an AWS CloudFormation Stack with Template One and copy the S3 bucket name and CloudFront URL from the AWS CloudFormation output.
