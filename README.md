@@ -2,7 +2,7 @@
 
 AWS Lambda Reference Architecture for creating a Mobile Backend. You can build backends using AWS Lambda and Amazon API Gateway to authenticate and process API requests. Lambda makes it easy to create rich, personalized app experiences.  The architecture described in this [diagram](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/lambda-refarch-mobilebackend.pdf) can be created with a CloudFormation template.
 
-[Template One](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backends/lambda_data_stores.template)
+[Template One](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/mobiledatastore.template)
 does the following:
 
 -   Configures the Amazon Simple Storage Service (Amazon S3) bucket to receive user uploaded photos.
@@ -11,7 +11,7 @@ does the following:
 
 -   Configures the Amazon DynamoDB Table for storing mobile data from the iOS application.
 
-[Template Two](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backends/lambda_api_functions.template)
+[Template Two](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/lambdafunctions.template)
 does the following:
 
 -   Creates a Lambda function to stream updates from DynamoDB and index in CloudSearch.
