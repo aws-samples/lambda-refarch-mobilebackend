@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "AWS CloudFormation Template for Mobile Backend Reference Architecture: Builds DynamoDB tables, an S3 bucket, and Lambda functions for use in a real-time voting application. ** This template creates multiple AWS resources. You will be billed for the AWS resources used if you create a stack from this template.",
+    "Description": "AWS CloudFormation Template for Mobile Backend Reference Architecture",
     "Parameters": {
         "LambdaSourceBucket": {
             "Type": "String",
