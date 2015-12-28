@@ -1,6 +1,28 @@
-# AWS Lambda Reference Architecture: Mobile Backends
+# AWS Lambda Reference Architecture: Mobile Backend
 
-AWS Lambda Reference Architecture for creating a Mobile Backend. You can build backends using AWS Lambda and Amazon API Gateway to authenticate and process API requests. Lambda makes it easy to create rich, personalized app experiences.  The architecture described in this [diagram](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/lambda-refarch-mobilebackend.pdf) can be created with a CloudFormation template.
+## Introduction
+
+The Mobile Backend reference architecture ([diagram](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/lambda-refarch-mobilebackend.pdf)) demonstrates how to use AWS Lambda along with other services to build a serverless backend for a mobile application. The specific example application provided enables users to upload photos and notes via S3 and API Gateway respectively. The notes are stored in Amazon DynamoDB and are processed asynchronously using DynamoDB streams and a Lambda function in order to add them to an Amazon CloudSearch domain. In addition to the source code for the Lambda functions, this repository also contains a prototype iOS application that provides examples for how to use the AWS mobile SDKs to interface with the backend resources defined in the architecture.
+
+## Running the example
+
+To run the full example application you must first deploy the backend resources and then compile and run the example iOS application.
+
+### Deploying the Backend
+
+The provided AWS CloudFormation template will create most of the backend resources necessary for this example, but you will need to create the Amazon CloudSearch domain and API Gateway REST API outside of AWS CloudFormation.
+
+#### Step 1. Create Amazon CloudSearch Domain
+
+1. Create a new Amazon CloudSearch domain using the [AWS console](https://console.aws.amazon.com/cloudsearch/home?region=us-east-1).
+1. Give the domain a name of your choice and leave the *Desired Instance Type* and *Desired Replication Count* as `Use default`.
+1. Select *Manual Configuration* for the index configuration type.
+1. Add 3 index fields for headline, s3_url and user_id as shown below:
+
+![Alt text](assets/cloudsearch-attributes.png?raw=true “CloudSearch Attributes”)
+
+1. Leave the search domain policy to the default, empty policy. Access will be configured using IAM roles created by the CloudFormation template.
+
 
 [Template One](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/mobiledatastore.template)
 does the following:
@@ -25,7 +47,7 @@ functions to write output to Amazon CloudWatch Logs, store data in DynamoDB, rea
 
 ## Instructions for Creating Mobile Backend
 
-**Important:** CloudSearch, API Gateway, and DynamoDB Streams will be configured through the console. During cleanup, you will need to manually delete these resources after deleting the AWS CloudFormation Stacks. The provided CloudFormation template retreives its Lambda code from a bucket in the us-east-1 region. To launch this sample in another region, please modify the template and upload the Lambda code to a bucket in that region. 
+**Important:** CloudSearch, API Gateway, and DynamoDB Streams will be configured through the console. During cleanup, you will need to manually delete these resources after deleting the AWS CloudFormation Stacks. The provided CloudFormation template retreives its Lambda code from a bucket in the us-east-1 region. To launch this sample in another region, please modify the template and upload the Lambda code to a bucket in that region.
 
 
 Step 1 – Create an AWS CloudFormation Stack with Template One and copy the S3 bucket name from the AWS CloudFormation output.
@@ -49,13 +71,13 @@ Step 5 – Add the created DynamoDB table as an event source for your streams-da
 
 In order to illustrate the end-to-end process, you can integrate with the sample mobile application available. The sample mobile application is built for iOS and requires creating a mobile SDK. The steps for integrating the SDK are described below:
 
-Step 1 - Create a new Amazon Cognito identity pool through the [Amazon Cognito dashboard](https://console.aws.amazon.com/cognito/home) for unauthenticated users. Modify the policy document to allow unauthenticated users to "execute-api:*" for API Gateway. Modify the policy document to allow users to upload to the S3 bucket created in Template One. 
+Step 1 - Create a new Amazon Cognito identity pool through the [Amazon Cognito dashboard](https://console.aws.amazon.com/cognito/home) for unauthenticated users. Modify the policy document to allow unauthenticated users to "execute-api:*" for API Gateway. Modify the policy document to allow users to upload to the S3 bucket created in Template One.
 
 Step 2 - Visit the [API Gateway dashboard](https://console.aws.amazon.com/apigateway/home) in your AWS account and create a new resource endpoints for `/notes`. Assign a POST method for the `/notes` endpoint. For the method, select the `Integration Request` type of “Lambda Function.” Configure the notes endpoint to use the notes-data-function.
 
 Under `Models` section, create a CreateNoteRequest and a CreateNoteResponse model using [these JSON templates ](https://github.com/awslabs/lambda-refarch-mobilebackend/tree/master/apigateway-models).
 
-Under `Method Request` for the method execution, enable API key required and assign the CreateNoteRequest model that was created earlier as the `Request Model`. 
+Under `Method Request` for the method execution, enable API key required and assign the CreateNoteRequest model that was created earlier as the `Request Model`.
 
 Under `Method Response` for the method exectuion, for a 200 response code select a content type of `application/json` and use the CreateNoteResponse model that was created earlier.
 
