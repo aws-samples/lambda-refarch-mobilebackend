@@ -1,0 +1,13 @@
+#!/bin/bash
+
+pushd notes-data-functions
+zip ../photonotesapi.zip ./*
+popd
+
+pushd streams-data-functions
+zip ../searchstreams.zip ./*
+popd
+
+pushd search-data-functions
+zip ../cloudsearchapi.zip ./*
+popd
