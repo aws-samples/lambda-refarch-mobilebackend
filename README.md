@@ -52,7 +52,7 @@ Use the following link to launch the provided AWS CloudFormation template in you
 
 [![Launch Lambda Mobile Backend into North Virginia with CloudFormation](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=lambda-mobile-backend&templateURL=https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/mobile-backend.template)
 
-*Note:* The provided template can be launched in the us-east-1 region using the provided bucket. If you would like to launch this stack in a different region you must create an Amazon S3 bucket in that region and copy the template and Lambda function definitions into it.
+**Note:** The provided template can be launched in the us-east-1 region using the provided bucket. If you would like to launch this stack in a different region you must create an Amazon S3 bucket in that region and copy the template and Lambda function definitions into it.
 
 When prompted enter the parameter values for the CloudSearch domain, API Gateway REST API, and Cognito identity pool resources you created in the previous steps.
 
@@ -61,33 +61,33 @@ When prompted enter the parameter values for the CloudSearch domain, API Gateway
 Once the CloudFormation stack has been created, you need to update the API you created previously to use the newly created `NotesApiFunction`.
 
 1. Select your API in the [Amazon API Gateway Console](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis).
-1. Click *Create Resource* to create a new child resource under /.
+1. Click **Create Resource** to create a new child resource under /.
 1. Enter `notes` as the resource name and `/notes` as the resource path.
-1. Click *Create Resource*.
-1. With the new `/notes` resource selected, click *Create Method*.
+1. Click **Create Resource**.
+1. With the new `/notes` resource selected, click **Create Method**.
 1. Select `POST` and click the checkbox.
-1. Select *Lambda Function* as the integration type and the region where you launched the CloudFormation stack as the Lambda region.
-1. Type 'NotesApiFunction' in the *Lambda Function* input box and select the function crated by the CloudFormation Stack.
-1. Click *Save* and grant API Gateway permission to execute the Lambda function.
+1. Select **Lambda Function** as the integration type and the region where you launched the CloudFormation stack as the Lambda region.
+1. Type 'NotesApiFunction' in the **Lambda Function** input box and select the function crated by the CloudFormation Stack.
+1. Click **Save** and grant API Gateway permission to execute the Lambda function.
 1. Click Method Request to edit the request configuration.
-1. Set the *Authorization type* to `AWS_IAM` and set *API Key Required* to `true`. Click the check mark next to each field.
-1. Click *Deploy API*.
-1. Select `New Stage` for *Deployment stage* and provide a name in the *Stage name* field.
-1. Note the *Invoke URL* for the new stage. You will use this value when running the sample iOS app.
+1. Set the **Authorization type** to `AWS_IAM` and set **API Key Required** to `true`. Click the check mark next to each field.
+1. Click **Deploy API**.
+1. Select `New Stage` for **Deployment stage** and provide a name in the **Stage name** field.
+1. Note the **Invoke URL** for the new stage. You will use this value when running the sample iOS app.
 
 #### Step 6. Update your Cognito Identity Pool
 
 1. Select your identity pool in the [Amazon Cognito Console](https://console.aws.amazon.com/cognito/home?region=us-east-1).
-1. Click *Edit Identity Pool*
-1. For both the *Unauthenticated role* and the *Authenticated role* select the MobileClientRole created by the CloudFormation stack. The full ARN for the role is provided in the outputs of the stack.
-1. Click *Save Changes*
+1. Click **Edit Identity Pool**.
+1. For both the **Unauthenticated role** and the **Authenticated role** select the MobileClientRole created by the CloudFormation stack. The full ARN for the role is provided in the outputs of the stack.
+1. Click **Save Changes**.
 
 
 ### Running the sample iOS application
 
 #### Prerequisites
 
-To run the provided iOS sample application you must be running *Mac OS X 10.10 (Yosemite)* or higher. You must also have the latest version of *[Xcode](https://itunes.apple.com/us/app/xcode/id497799835)* and *[Cocoa Pods](https://cocoapods.org/)* installed. 
+To run the provided iOS sample application you must be running **Mac OS X 10.10 (Yosemite)** or higher. You must also have the latest version of **[Xcode](https://itunes.apple.com/us/app/xcode/id497799835)** and **[Cocoa Pods](https://cocoapods.org/)** installed. 
 
 
 [Template One](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/mobiledatastore.template)
