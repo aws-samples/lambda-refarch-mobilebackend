@@ -1,0 +1,476 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Metadata": {
+    "AWS::CloudFormation::Interface": {
+      "ParameterGroups": [{
+        "Label": {
+          "default": "Code Location"
+        },
+        "Parameters": ["CodeBucket", "CodeKeyPrefix"]
+      }, {
+        "Label": {
+          "default": "CloudSearch Endpoints"
+        },
+        "Parameters": ["SearchDomainArn", "SearchEndpoint", "DocumentEndpoint"]
+      }, {
+        "Label": {
+          "default": "API Gateway and Cognito Identity"
+        },
+        "Parameters": ["ApiGatewayId", "CognitoPoolId"]
+      }],
+      "ParameterLabels": {
+        "CodeBucket": {
+          "default": "Code Bucket"
+        },
+        "CodeKeyPrefix": {
+          "default": "Key Prefix"
+        },
+        "SearchDomainArn": {
+          "default": "CloudSearch Domain ARN"
+        },
+        "DocumentEndpoint": {
+          "default": "Document Endpoint"
+        },
+        "SearchEndpoint": {
+          "default": "Search Endpoint"
+        },
+        "ApiGatewayId": {
+          "default": "API Gateway REST API ID"
+        },
+        "CognitoPoolId": {
+          "default": "Cognito Identity Pool ID"
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "CodeBucket": {
+      "Description": "S3 Bucket containing Lambda deployment packages and sub-stack templates",
+      "Type": "String",
+      "Default": "awslambda-reference-architectures"
+    },
+    "CodeKeyPrefix": {
+      "Description": "The key prefix for all deployment packages and sub-stack templates within CodeBucket",
+      "Type": "String",
+      "Default": "mobile-backend"
+    },
+    "SearchDomainArn": {
+      "Description": "The ARN of your CloudSearch domain",
+      "Type": "String"
+    },
+    "DocumentEndpoint": {
+      "Description": "The document endpoint of your CloudSearch domain",
+      "Type": "String"
+    },
+    "SearchEndpoint": {
+      "Description": "The search endpoint of your CloudSearch domain",
+      "Type": "String"
+    },
+    "CognitoPoolId": {
+      "Description": "The ID of your Cognito Identity Pool in the format [region]:[GUID] (e.g. us-east-1:92abc7a7-4bcd-470ac-a003-a93b99ca9338)",
+      "Type": "String"
+    },
+    "ApiGatewayId": {
+      "Description": "The ID of your API Gateway REST API. This is the base 64 subdomain of your API's invoke URL.",
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "NotesApiFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "CodeBucket"
+          },
+          "S3Key": {
+            "Fn::Join": ["/", [{
+              "Ref": "CodeKeyPrefix"
+            }, "upload-note.zip"]]
+          }
+        },
+        "Runtime": "nodejs",
+        "Description": "Receives mobile requests and stores in dynamodb",
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": ["NotesApiRole", "Arn"]
+        }
+      }
+    },
+    "SearchApiFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "CodeBucket"
+          },
+          "S3Key": {
+            "Fn::Join": ["/", [{
+              "Ref": "CodeKeyPrefix"
+            }, "search.zip"]]
+          }
+        },
+        "Runtime": "nodejs",
+        "Description": {
+          "Fn::Join": ["", ["{\"searchEndpoint\":", {
+            "Ref": "SearchEndpoint"
+          }, "}"]]
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": ["SearchApiRole", "Arn"]
+        }
+      }
+    },
+    "DynamoStreamHandlerFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "CodeBucket"
+          },
+          "S3Key": {
+            "Fn::Join": ["/", [{
+              "Ref": "CodeKeyPrefix"
+            }, "stream-handler.zip"]]
+          }
+        },
+        "Runtime": "nodejs",
+        "Description": {
+          "Fn::Join": ["", ["{\"documentEndpoint\":", {
+            "Ref": "DocumentEndpoint"
+          }, "}"]]
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": ["DynamoStreamHandlerRole", "Arn"]
+        }
+      }
+    },
+    "NotesApiRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }]
+        },
+        "Policies": [{
+          "PolicyName": "lambda_dynamo_exec_role_photoapp",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": [
+                "arn:aws:logs:*:*:*"
+              ]
+            }, {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:Query",
+                "dynamodb:UpdateItem"
+              ],
+              "Resource": {
+                "Fn::Join": ["", ["arn:aws:dynamodb:", {
+                    "Ref": "AWS::Region"
+                  },
+                  ":", {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/", {
+                    "Ref": "PhotoNotesTable"
+                  }
+                ]]
+              }
+            }]
+          }
+        }]
+      }
+    },
+    "SearchApiRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }]
+        },
+        "Policies": [{
+          "PolicyName": "lambda_cloudsearch_exec_role_photoapp",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "lambda:GetFunction"
+              ],
+              "Resource": [
+                "*"
+              ]
+            }, {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": [
+                "arn:aws:logs:*:*:*"
+              ]
+            }, {
+              "Effect": "Allow",
+              "Action": [
+                "cloudsearch:search",
+                "cloudsearch:suggest"
+              ],
+              "Resource": {
+                "Ref": "SearchDomainArn"
+              }
+            }]
+          }
+        }]
+      }
+    },
+    "DynamoStreamHandlerRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }]
+        },
+        "Policies": [{
+          "PolicyName": "lambda_dynamo_exec_role_photoapp",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "lambda:GetFunction"
+              ],
+              "Resource": [
+                "*"
+              ]
+            }, {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": [
+                "arn:aws:logs:*:*:*"
+              ]
+            }, {
+              "Effect": "Allow",
+              "Action": [
+                "cloudsearch:document"
+              ],
+              "Resource": {
+                "Ref": "SearchDomainArn"
+              }
+            }]
+          }
+        }]
+      }
+    },
+    "MobileClientRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+              "Federated": "cognito-identity.amazonaws.com"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+              "StringEquals": {
+                "cognito-identity.amazonaws.com:aud": {
+                  "Ref": "CognitoPoolId"
+                }
+              },
+              "ForAnyValue:StringLike": {
+                "cognito-identity.amazonaws.com:amr": "unauthenticated"
+              }
+            }
+          }]
+        },
+        "Policies": [{
+          "PolicyName": "client_api_s3_access",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:PutObject",
+                "s3:PutObjectAcl"
+              ],
+              "Resource": [{
+                "Fn::Join": ["", ["arn:aws:s3:::", {
+                  "Ref": "MobileUploadsBucket"
+                }, "/*"]]
+              }]
+            }, {
+              "Effect": "Allow",
+              "Action": [
+                "execute-api:Invoke"
+              ],
+              "Resource": [{
+                "Fn::Join": ["", [
+                  "arn:aws:execute-api:", {
+                    "Ref": "AWS::Region"
+                  },
+                  ":", {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":", {
+                    "Ref": "ApiGatewayId"
+                  },
+                  "/*"
+                ]]
+              }]
+            } ]
+          }
+        }]
+      }
+    },
+    "MobileUploadsBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "PublicRead"
+      }
+    },
+    "CloudFrontDistribution": {
+      "Type": "AWS::CloudFront::Distribution",
+      "Properties": {
+        "DistributionConfig": {
+          "Enabled": true,
+          "PriceClass": "PriceClass_All",
+          "DefaultCacheBehavior": {
+            "TargetOriginId": "mobile-uploads",
+            "ViewerProtocolPolicy": "allow-all",
+            "MinTTL": 0,
+            "AllowedMethods": [
+              "HEAD",
+              "GET"
+            ],
+            "CachedMethods": [
+              "HEAD",
+              "GET"
+            ],
+            "ForwardedValues": {
+              "Cookies": {
+                "Forward": "none"
+              },
+              "QueryString": "false"
+            }
+          },
+          "Origins": [{
+            "DomainName": {
+              "Fn::Join": ["", [{
+                "Ref": "MobileUploadsBucket"
+              }, ".s3.amazonaws.com"]]
+            },
+            "Id": "mobile-uploads",
+            "S3OriginConfig": {}
+          }],
+          "Restrictions": {
+            "GeoRestriction": {
+              "RestrictionType": "none",
+              "Locations": []
+            }
+          },
+          "ViewerCertificate": {
+            "CloudFrontDefaultCertificate": "true",
+            "MinimumProtocolVersion": "SSLv3"
+          }
+        }
+      }
+    },
+    "PhotoNotesTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [{
+          "AttributeName": "noteId",
+          "AttributeType": "S"
+        }],
+        "KeySchema": [{
+          "AttributeName": "noteId",
+          "KeyType": "HASH"
+        }],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "10",
+          "WriteCapacityUnits": "10"
+        },
+        "TableName": "Notes",
+        "StreamSpecification": {
+          "StreamViewType": "NEW_IMAGE"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "S3BucketName": {
+      "Description": "Set S3BucketName in Constants.swift to this value.",
+      "Value": {
+        "Ref": "MobileUploadsBucket"
+      }
+    },
+    "NotesApiFunctionArn": {
+      "Description": "Use this function to back the POST method on the /notes resource of your API.",
+      "Value": {
+        "Fn::GetAtt": ["NotesApiFunction", "Arn"]
+      }
+    },
+    "CognitoIdentityPoolId": {
+      "Description": "Set CongnitoIdentityPoolId in Constants.swift to this value.",
+      "Value": {
+        "Ref": "CognitoPoolId"
+      }
+    },
+    "AWSAccountId": {
+      "Description": "Set AWSAccountId in Constants.swift to this value.",
+      "Value": {
+        "Ref": "AWS::AccountId"
+      }
+    },
+    "CognitoRoleArn": {
+      "Description": "Use this for both the authenticated and unauthenticated roles in your Cognito Identity Pool.",
+      "Value": {
+        "Fn::GetAtt": ["MobileClientRole", "Arn"]
+      }
+    },
+    "CloudFrontUrl": {
+      "Description": "CloudFront URL for the distribution fronting the S3 bucket",
+      "Value": {
+        "Ref": "CloudFrontDistribution"
+      }
+    }
+  }
+}
