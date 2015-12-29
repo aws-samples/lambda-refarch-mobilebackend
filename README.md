@@ -15,24 +15,24 @@ The provided AWS CloudFormation template will create most of the backend resourc
 #### Step 1. Create Amazon CloudSearch Domain
 
 1. Create a new Amazon CloudSearch domain using the [AWS CLI](https://aws.amazon.com/cli/) providing a domain name of your choice.
-```
-aws cloudsearch create-domain --domain-name [YOUR_DOMAIN_NAME]
-```
+    ```
+    aws cloudsearch create-domain --domain-name [YOUR_DOMAIN_NAME]
+    ```
 
 2. Note the ARN of the new domain in the output document. You will use this as an input when launching the CloudFormation stack.
 
 3. Define indexes for the `headline` and `text` fields.
-```
-aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
-```
+    ```
+    aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    ```
 
 #### Step 2. Create an API Gateway REST API
 
 1. Using the [AWS CLI](https://aws.amazon.com/cli/), create a new API providing a name of your choice.
-```
-aws apigateway create-rest-api --name [YOUR_API_NAME]
-```
+    ```
+    aws apigateway create-rest-api --name [YOUR_API_NAME]
+    ```
 
 2. Note the API ID provided in the output document. You will use this as an input when launching the CloudFormation stack.
 
@@ -40,9 +40,9 @@ aws apigateway create-rest-api --name [YOUR_API_NAME]
 
 1. Create a new identity pool using the [AWS CLI](https://aws.amazon.com/cli/) providing a name of your choice.
 
-```
-aws cognito-identity create-identity-pool --allow-unauthenticated-identities --identity-pool-name [YOUR_POOL_NAME]
-```
+    ```
+    aws cognito-identity create-identity-pool --allow-unauthenticated-identities --identity-pool-name [YOUR_POOL_NAME]
+    ```
 
 2. Note the IdentityPoolId from the output document. You will use this as a parameter when launching the CloudFormation stack.
 
@@ -104,14 +104,14 @@ To run the provided iOS sample application you must be running **Mac OS X 10.10 
 1. Checkout or download the source code for the ios-sample in this repository.
 1. Update `MobileBackendIOS/Constants.swift` with the values for your backend deployment. Most of the values can be found in the outputs of the CloudFormation stack. The API Gateway Key and endpoint URL values are available in the details for your API in the AWS Console.
 1. Run Cocoa Pods from the root ios-sample directory.
-```
-pod install
-```
+    ```
+    pod install
+    ```
 
 1. Open the generated `MobileBackendIOS.xcworkspace` file in Xcode.
-```
-open -a Xcode MobileBackendIOS.xcworkspace
-```
+    ```
+    open -a Xcode MobileBackendIOS.xcworkspace
+    ```
 
 1. Build and run the project from Xcode by clicking the "play" button at the top of the window.
 
