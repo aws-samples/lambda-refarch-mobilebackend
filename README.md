@@ -19,9 +19,9 @@ The provided AWS CloudFormation template will create most of the backend resourc
     aws cloudsearch create-domain --domain-name [YOUR_DOMAIN_NAME]
     ```
 
-2. Note the ARN of the new domain in the output document. You will use this as an input when launching the CloudFormation stack.
+1. Note the ARN of the new domain in the output document. You will use this as an input when launching the CloudFormation stack.
 
-3. Define indexes for the `headline` and `text` fields.
+1. Define indexes for the `headline` and `text` fields.
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
     aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
@@ -34,7 +34,7 @@ The provided AWS CloudFormation template will create most of the backend resourc
     aws apigateway create-rest-api --name [YOUR_API_NAME]
     ```
 
-2. Note the API ID provided in the output document. You will use this as an input when launching the CloudFormation stack.
+1. Note the API ID provided in the output document. You will use this as an input when launching the CloudFormation stack.
 
 #### Step 3. Create a Cognito Identity Pool
 
@@ -44,7 +44,7 @@ The provided AWS CloudFormation template will create most of the backend resourc
     aws cognito-identity create-identity-pool --allow-unauthenticated-identities --identity-pool-name [YOUR_POOL_NAME]
     ```
 
-2. Note the IdentityPoolId from the output document. You will use this as a parameter when launching the CloudFormation stack.
+1. Note the IdentityPoolId from the output document. You will use this as a parameter when launching the CloudFormation stack.
 
 #### Step 4. Launch the AWS CloudFormation template
 
