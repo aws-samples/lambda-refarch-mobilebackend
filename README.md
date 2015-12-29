@@ -19,9 +19,9 @@ The provided AWS CloudFormation template will create most of the backend resourc
 aws cloudsearch create-domain --domain-name [YOUR_DOMAIN_NAME]
 ```
 
-1. Note the ARN of the new domain in the output document. You will use this as an input when launching the CloudFormation stack.
+2. Note the ARN of the new domain in the output document. You will use this as an input when launching the CloudFormation stack.
 
-1. Define indexes for the `headline` and `text` fields.
+3. Define indexes for the `headline` and `text` fields.
 ```
 aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
 aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
@@ -34,7 +34,7 @@ aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_D
 aws apigateway create-rest-api --name [YOUR_API_NAME]
 ```
 
-1. Note the API ID provided in the output document. You will use this as an input when launching the CloudFormation stack.
+2. Note the API ID provided in the output document. You will use this as an input when launching the CloudFormation stack.
 
 #### Step 3. Create a Cognito Identity Pool
 
@@ -75,7 +75,17 @@ Once the CloudFormation stack has been created, you need to update the API you c
 1. Select `New Stage` for **Deployment stage** and provide a name in the **Stage name** field.
 1. Note the **Invoke URL** for the new stage. You will use this value when running the sample iOS app.
 
-#### Step 6. Update your Cognito Identity Pool
+#### Step 6. Create an API Key
+
+1. From the [Amazon API Gateway Console](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis) select **API Keys** from the leftmost dropdown.
+1. Click **Create API Key**.
+1. Give the key a name and check the **Enabled** box.
+1. Click **Save**
+1. In the **API Stage Association** section select your API and the stage you created in the previous step.
+1. Click **Add**.
+1. Note the **API key**. You will use this when running the mobile application.
+
+#### Step 7. Update your Cognito Identity Pool
 
 1. Select your identity pool in the [Amazon Cognito Console](https://console.aws.amazon.com/cognito/home?region=us-east-1).
 1. Click **Edit Identity Pool**.
@@ -87,7 +97,7 @@ Once the CloudFormation stack has been created, you need to update the API you c
 
 #### Prerequisites
 
-To run the provided iOS sample application you must be running **Mac OS X 10.10 (Yosemite)** or higher. You must also have the latest version of **[Xcode](https://itunes.apple.com/us/app/xcode/id497799835)** and **[Cocoa Pods](https://cocoapods.org/)** installed. 
+To run the provided iOS sample application you must be running **Mac OS X 10.10 (Yosemite)** or higher. You must also have the latest version of **[Xcode](https://itunes.apple.com/us/app/xcode/id497799835)** and **[Cocoa Pods](https://cocoapods.org/)** installed.
 
 #### Building and running
 
