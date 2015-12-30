@@ -22,10 +22,10 @@ exports.handler = function(event, context) {
         if (description) {
           try {
             var config = JSON.parse(description);
-            if(config.tableName) {
-              tableName = config.tableName;
+            if(config.notesTable) {
+              tableName = config.notesTable;
             } else {
-              console.log("Error: no tableName defined in configuration.");
+              console.log("Error: no notesTable defined in configuration.");
               context.fail("Lambda configuration error");
             }
           } catch (e) {
