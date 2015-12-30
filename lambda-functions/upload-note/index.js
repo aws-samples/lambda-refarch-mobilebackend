@@ -1,9 +1,47 @@
+var AWS = require('aws-sdk');
+var lambda = new AWS.Lambda();
+
 var doc = require('dynamodb-doc');
 var dynamo = new doc.DynamoDB();
 
-exports.handler = function(createNoteEvent, context) {
+var tableName;
+
+exports.handler = function(event, context) {
+  if (tableName) {
+    handleEvent(event, context);
+  } else {
+    lambda.getFunction({
+      "FunctionName": context.functionName,
+      "Qualifier": context.functionVersion
+    }, function(err, data) {
+      if (err) {
+        console.log("Error fetching function details: " + err);
+        context.fail(err);
+      } else {
+        var description = data.Configuration.Description;
+        if (description) {
+          try {
+            var config = JSON.parse(description);
+            if(config.tableName) {
+              tableName = config.tableName;
+            } else {
+              console.log("Error: no tableName defined in configuration.");
+              context.fail("Lambda configuration error");
+            }
+          } catch (e) {
+            console.log("Error deserializing description");
+            context.fail(e);
+          }
+        }
+        handleEvent(event, context);
+      }
+    });
+  }
+};
+
+function handleEvent(createNoteEvent, context) {
     var note = {
-        TableName : "Notes",
+        TableName : tableName,
         Item : {
             noteId : createNoteEvent.noteId,
             headline : createNoteEvent.headline,
@@ -11,11 +49,11 @@ exports.handler = function(createNoteEvent, context) {
         }
     };
 
-    dynamo.putItem(note, function(err,savedNote) { 
+    dynamo.putItem(note, function(err,savedNote) {
         if(err) {
             context.fail(new Error('Unable to save note with key: "' + createNoteEvent.noteId + '"'));
         } else {
             context.succeed({success: true});
         }
-    });  
-};
+    });
+}

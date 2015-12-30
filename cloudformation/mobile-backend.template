@@ -90,7 +90,7 @@
           }
         },
         "Runtime": "nodejs",
-        "Description": "Receives mobile requests and stores in dynamodb",
+        "Description": {"Fn::Join": ["", ["{\"notesTable\":\"", {"Ref": "PhotoNotesTable"} ,"\"}"]]},
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": ["NotesApiRole", "Arn"]
@@ -167,6 +167,15 @@
             "Statement": [{
               "Effect": "Allow",
               "Action": [
+                "lambda:GetFunction"
+              ],
+              "Resource": [
+                "*"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
                 "logs:PutLogEvents"
@@ -224,7 +233,8 @@
               "Resource": [
                 "*"
               ]
-            }, {
+            },
+            {
               "Effect": "Allow",
               "Action": [
                 "logs:CreateLogGroup",
@@ -428,7 +438,6 @@
           "ReadCapacityUnits": "10",
           "WriteCapacityUnits": "10"
         },
-        "TableName": "Notes",
         "StreamSpecification": {
           "StreamViewType": "NEW_IMAGE"
         }
