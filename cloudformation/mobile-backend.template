@@ -71,7 +71,7 @@
       "Type": "String"
     },
     "ApiGatewayId": {
-      "Description": "The ID of your API Gateway REST API. This is the base 64 subdomain of your API's invoke URL.",
+      "Description": "The ID of your API Gateway REST API. This is the most specific subdomain of your API's invoke URL.",
       "Type": "String"
     }
   },
