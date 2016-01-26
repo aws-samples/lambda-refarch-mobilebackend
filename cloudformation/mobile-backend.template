@@ -409,6 +409,55 @@
         "AccessControl": "PublicRead"
       }
     },
+
+    "CloudFrontDistribution": {
+      "Type": "AWS::CloudFront::Distribution",
+      "Properties": {
+        "DistributionConfig": {
+          "Enabled": true,
+          "PriceClass": "PriceClass_All",
+          "DefaultCacheBehavior": {
+            "TargetOriginId": "mobile-uploads",
+            "ViewerProtocolPolicy": "allow-all",
+            "MinTTL": 0,
+            "AllowedMethods": [
+              "HEAD",
+              "GET"
+            ],
+            "CachedMethods": [
+              "HEAD",
+              "GET"
+            ],
+            "ForwardedValues": {
+              "Cookies": {
+                "Forward": "none"
+              },
+              "QueryString": "false"
+            }
+          },
+          "Origins": [{
+            "DomainName": {
+              "Fn::Join": ["", [{
+                "Ref": "MobileUploadsBucket"
+              }, ".s3.amazonaws.com"]]
+            },
+            "Id": "mobile-uploads",
+            "S3OriginConfig": {}
+          }],
+          "Restrictions": {
+            "GeoRestriction": {
+              "RestrictionType": "none",
+              "Locations": []
+            }
+          },
+          "ViewerCertificate": {
+            "CloudFrontDefaultCertificate": "true",
+            "MinimumProtocolVersion": "SSLv3"
+          }
+        }
+      }
+    },
+
     "PhotoNotesTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
@@ -545,6 +594,12 @@
       "Description": "Use this for both the authenticated and unauthenticated roles in your Cognito Identity Pool.",
       "Value": {
         "Fn::GetAtt": ["MobileClientRole", "Arn"]
+      }
+    },
+    "CloudFrontUrl": {
+      "Description": "CloudFront URL for the distribution fronting the S3 bucket",
+      "Value": {
+        "Ref": "CloudFrontDistribution"
       }
     }
   }
