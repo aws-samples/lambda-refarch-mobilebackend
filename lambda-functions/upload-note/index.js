@@ -1,38 +1,25 @@
 var AWS = require('aws-sdk');
-var lambda = new AWS.Lambda();
 
-var doc = require('dynamodb-doc');
-var dynamo = new doc.DynamoDB();
+var DOC = require('dynamodb-doc');
 
-var tableName;
+var doc = new AWS.DynamoDB.DocumentClient();
+
+var config;
 
 exports.handler = function(event, context) {
-  if (tableName) {
+  if (config) {
     handleEvent(event, context);
   } else {
-    lambda.getFunction({
-      "FunctionName": context.functionName,
-      "Qualifier": context.functionVersion
-    }, function(err, data) {
+    var params = {
+      TableName: 'MobileRefArchConfig',
+      Key: { Environment: 'demo' }
+    };
+    doc.get(params, function(err, data) {
       if (err) {
-        console.log("Error fetching function details: " + err);
+        console.log(err, err.stack);
         context.fail(err);
       } else {
-        var description = data.Configuration.Description;
-        if (description) {
-          try {
-            var config = JSON.parse(description);
-            if(config.notesTable) {
-              tableName = config.notesTable;
-            } else {
-              console.log("Error: no notesTable defined in configuration.");
-              context.fail("Lambda configuration error");
-            }
-          } catch (e) {
-            console.log("Error deserializing description");
-            context.fail(e);
-          }
-        }
+        config = data.Item;
         handleEvent(event, context);
       }
     });
@@ -41,7 +28,7 @@ exports.handler = function(event, context) {
 
 function handleEvent(createNoteEvent, context) {
     var note = {
-        TableName : tableName,
+        TableName : config.NotesTable,
         Item : {
             noteId : createNoteEvent.noteId,
             headline : createNoteEvent.headline,
@@ -49,7 +36,7 @@ function handleEvent(createNoteEvent, context) {
         }
     };
 
-    dynamo.putItem(note, function(err,savedNote) {
+    doc.put(note, function(err,savedNote) {
         if(err) {
             context.fail(new Error('Unable to save note with key: "' + createNoteEvent.noteId + '"'));
         } else {
