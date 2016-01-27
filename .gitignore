@@ -1,0 +1,7 @@
+
+ios-sample/Pods/*
+ios-sample/Podfile.lock
+ios-sample/MobileBackendIOS.xcodeproj/xcuserdata
+ios-sample/MobileBackendIOS.xcworkspace
+lambda-functions/*.zip
+.DS_Store

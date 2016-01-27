@@ -1,0 +1,6 @@
+#!/bin/bash
+
+BUCKET=awslambda-reference-architectures
+aws s3 cp --acl public-read upload-note.zip s3://$BUCKET/mobile-backend/upload-note.zip
+aws s3 cp --acl public-read search.zip s3://$BUCKET/mobile-backend/search.zip
+aws s3 cp --acl public-read stream-handler.zip s3://$BUCKET/mobile-backend/stream-handler.zip

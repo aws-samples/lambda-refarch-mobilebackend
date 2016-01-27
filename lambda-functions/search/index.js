@@ -1,36 +1,22 @@
 var AWS = require('aws-sdk');
-var lambda = new AWS.Lambda();
-var cloudSearchDomain;
+var doc = new AWS.DynamoDB.DocumentClient();
+
+var config;
 
 exports.handler = function(event, context) {
-  if (cloudSearchDomain) {
+  if (config) {
     handleEvent(event, context);
   } else {
-    lambda.getFunction({
-      "FunctionName": context.functionName,
-      "Qualifier": context.functionVersion
-    }, function(err, data) {
+    var params = {
+      TableName: 'MobileRefArchConfig',
+      Key: { Environment: 'demo' }
+    };
+    doc.get(params, function(err, data) {
       if (err) {
-        console.log("Error fetching function details: " + err);
+        console.log(err, err.stack);
         context.fail(err);
       } else {
-        var description = data.Configuration.Description;
-        if (description) {
-          try {
-            var config = JSON.parse(description);
-            if(config.searchEndpoint) {
-              cloudSearchDomain = new AWS.CloudSearchDomain({
-                endpoint: config.searchEndpoint
-              });
-            } else {
-              console.log("Error: no searchEndpoint defined in configuration.");
-              context.fail("Lambda configuration error");
-            }
-          } catch (e) {
-            console.log("Error deserializing description");
-            context.fail(e);
-          }
-        }
+        config = data.Item;
         handleEvent(event, context);
       }
     });
@@ -38,6 +24,10 @@ exports.handler = function(event, context) {
 };
 
 function handleEvent(event, context) {
+  var cloudSearchDomain = new AWS.CloudSearchDomain({
+    endpoint: config.SearchEndpoint
+  });
+
   var params = {
     query: event.searchTerm,
     size: 10,
