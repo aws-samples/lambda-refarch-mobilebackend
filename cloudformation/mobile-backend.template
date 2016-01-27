@@ -531,16 +531,6 @@
         "ServiceToken": { "Fn::GetAtt" : ["ConfigHelperStack", "Outputs.ServiceToken"] },
         "Environment": "demo",
         "Key": "NotesTable",
-        "Value": { "Ref": "NotesTable" }
-      }
-    },
-
-    "NotesTableConfig": {
-      "Type": "Custom::ConfigSetting",
-      "Properties": {
-        "ServiceToken": { "Fn::GetAtt" : ["ConfigHelperStack", "Outputs.ServiceToken"] },
-        "Environment": "demo",
-        "Key": "NotesTable",
         "Value": { "Ref": "PhotoNotesTable" }
       }
     },
