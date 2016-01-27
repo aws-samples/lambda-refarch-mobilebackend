@@ -76,7 +76,7 @@ After you have created the CloudFormation stack, you need to update the API you 
 1. Choose **Save** and grant API Gateway permissions to execute the Lambda function.
 1. Choose **Method Request** to edit the request configuration.
 1. For **Authorization type**, select `AWS_IAM`.
-1. For **API Key Required**, select `true`. 
+1. For **API Key Required**, select `true`.
 1. Choose **Deploy API**.
 1. For **Deployment stage**, choose `New Stage` and then type a name in **Stage name**.
 1. Note the **Invoke URL** for the new stage. You will use this value when running the sample iOS app.
@@ -192,6 +192,18 @@ To remove all resources created by this example, do the following:
 - **CloudFrontDistribution** - A CDN distribution with the `MobileUploadsBucket` configured as an origin.
 
 - **PhotoNotesTable** - A DynamoDB table that stores notes uploaded by users from the mobile application.
+
+### Configuration
+
+- **ConfigTable** - A DynamoDB table to hold configuration values read by the various Lambda functions. The name of this table, "MobileRefArchConfig", is hard coded into each function's code and cannot be modified without updating the code as well.
+
+- **ConfigHelperStack** - A sub-stack that creates a custom resource for writing entries to the `ConfigTable`. This stack creates a Lambda function and execution role that grants UpdateItem permission on the `ConfigTable`.
+
+- **NotesTableConfig** - A configuration entry that identifies the `PhotoNotesTable` name.
+
+- **SearchEndpointConfig** - A configuration entry that identifies the search endpoint of the CloudSearch domain passed as a parameter.
+
+- **DocumentEndpointConfig** - A configuration entry that identifies document endpoint of the CloudSearch domain passed as a parameter.
 
 ## License
 
