@@ -1,5 +1,7 @@
 # Serverless Reference Architecture: Mobile Backend
-
+README Languages:  [DE](README/README-DE.md)/) | [ES](README/README-ES.md) | [FR](README/README-FR.md) | [IT](README/README-IT.md) | [JP](README/README-JP.md) | [KR](README/README-KR.md) |
+[PT](README/README-PT.md) | [RU](README/README-RU.md) |
+[CN](README/README-CN.md) | [TW](README/README-TW.md)
 ## Introduction
 
 The Mobile Backend reference architecture ([diagram](https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/lambda-refarch-mobilebackend.pdf)) demonstrates how to use [AWS Lambda](http://aws.amazon.com/lambda/) along with other services to build a serverless backend for a mobile application. The specific example application provided in this repository enables users to upload photos and notes using Amazon Simple Storage Service (Amazon S3) and Amazon API Gateway respectively. The notes are stored in Amazon DynamoDB, and are processed asynchronously using DynamoDB streams and a Lambda function to add them to an Amazon CloudSearch domain. In addition to the source code for the Lambda functions, this repository also contains a prototype iOS application that provides examples for how to use the AWS Mobile SDK for iOS to interface with the backend resources defined in the architecture.
