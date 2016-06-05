@@ -55,7 +55,7 @@
 
 **Launch Stack**을 선택하여 계정의 us-east-1 리전에서 템플릿을 시작합니다.
 
-[![Launch Lambda Mobile Backend into North Virginia with CloudFormation](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=lambda-mobile-backend&amp;templateURL=https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/mobile-backend.template)
+[![Launch Lambda Mobile Backend into North Virginia with CloudFormation](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=lambda-mobile-backend&templateURL=https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/mobile-backend.template)
 
 확인 메시지가 표시되면 앞 단계에서 만든 CloudSearch 도메인, API Gateway REST API 및 Amazon Cognito 자격 증명 풀 리소스의 파라미터 값을 입력합니다.
 
