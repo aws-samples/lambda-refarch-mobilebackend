@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# If running in region other than US EAST 1 and the provided Template
+# Then, change BUCKET to your custom bucket name
 BUCKET=awslambda-reference-architectures
 aws s3 cp --acl public-read upload-note.zip s3://$BUCKET/mobile-backend/upload-note.zip
 aws s3 cp --acl public-read search.zip s3://$BUCKET/mobile-backend/search.zip
