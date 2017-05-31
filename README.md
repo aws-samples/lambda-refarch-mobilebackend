@@ -24,12 +24,17 @@ The provided AWS CloudFormation template creates most of the backend resources t
 
 1. Note the ARN of the new domain in the output document. You will use this as an input when launching the CloudFormation stack.
 
-1. Define indexes for the `headline` and `text` fields.
+1. Define indexes for the `headline` and `note_text` fields.
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [YOUR_DOMAIN_NAME]
     ```
+    Note: You will need to reindex your Domain via CLI or Console. Here is the CLI command:
+
+    '''
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
+    '''
 
 #### Step 2: Create an API Gateway REST API
 
@@ -53,13 +58,14 @@ The provided AWS CloudFormation template creates most of the backend resources t
 
 #### Step 4: Launch the CloudFormation Template
 
-You can deploy the entire example in the us-east-1 region using the provided CloudFormation template and S3 bucket. If you would like to deploy the template to a different region, you must create an Amazon S3 bucket in that region, and then copy the template and Lambda function definitions into it.
+You can deploy the entire example in the us-east-1 region using the provided CloudFormation template and S3 bucket by Launching the stack below.
+If you would like to deploy the template to a different region, you must create an Amazon S3 bucket in that region, then in the file `lambda-functions/upload`, modify the BUCKET variable with the bucket you created, run `./upload`, and copy config-helper.template and mobile-backend.template into the bucket.
 
 Choose **Launch Stack** to launch the template in the us-east-1 region in your account:
 
 [![Launch Lambda Mobile Backend into North Virginia with CloudFormation](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=lambda-mobile-backend&templateURL=https://s3.amazonaws.com/awslambda-reference-architectures/mobile-backend/mobile-backend.template)
 
-When prompted, enter the parameter values for the CloudSearch domain, API Gateway REST API, and Amazon Cognito identity pool resources you created in the previous steps.
+When prompted, enter the parameter values for the CloudSearch domain, CloudSearch Search/Document Endpoints, API Gateway REST API ID, and Amazon Cognito identity pool resources you created in the previous steps.
 
 Details about the resources created by this template are provided in the *CloudFormation Template Resources* section of this document.
 
@@ -79,19 +85,19 @@ After you have created the CloudFormation stack, you need to update the API you 
 1. Choose **Method Request** to edit the request configuration.
 1. For **Authorization type**, select `AWS_IAM`.
 1. For **API Key Required**, select `true`.
-1. Choose **Deploy API**.
+1. Select the Actions dropdown, Choose **Deploy API**.
 1. For **Deployment stage**, choose `New Stage` and then type a name in **Stage name**.
 1. Note the **Invoke URL** for the new stage. You will use this value when running the sample iOS app.
 
 #### Step 6: Create an API Key
 
-1. In the [Amazon API Gateway Console](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis), choose **APIs**, and then choose **API Keys**.
+1. In the [Amazon API Gateway Console](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis), choose **API Keys**.
 1. Choose **Create API Key**.
-1. Type a name for the key and then select **Enabled**.
-1. Choose **Save**
-1. In the **API Stage Association** section, choose your API and then choose the stage that you created in the previous step.
-1. Choose **Add**.
+1. Type a name for the key and then select **Save**.
 1. Note the **API key**. You will use this when running the mobile application.
+1. Click on **Usage Plans** and type a name for the plan. Disable Throttling and Quotas. Click **Next**.
+1. From the dropdowns, seleect your API and Stage created in Step 4. Click the Checkbox and then **Next**.
+1. Click  **Add API Key to Usage Plan**  and enter the Key you created earlier then choose **Done**.
 
 #### Step 7: Update Your Amazon Cognito Identity Pool
 
