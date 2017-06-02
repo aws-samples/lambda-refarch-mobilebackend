@@ -22,11 +22,15 @@
 
 1.出力ドキュメントの新しいドメインの ARN をメモしておきます。CloudFormation スタックを起動するときに、これを入力として使用します。
 
-1.`headline` および `text` フィールドのインデックスを定義します。
+1.`headline` および `note_text` フィールドのインデックスを定義します。
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [ドメイン名]
-    aws cloudsearch define-index-field --name text --type text --domain-name [ドメイン名]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [ドメイン名]
+    ```
+
+    ```
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
     ```
 
 #### ステップ 2: API Gateway REST API を作成する

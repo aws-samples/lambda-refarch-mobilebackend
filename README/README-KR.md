@@ -26,9 +26,13 @@
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [YOUR_DOMAIN_NAME]
     ```
 
+    ```
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
+    ```
+    
 #### 2단계: API Gateway REST API 생성
 
 1. [AWS CLI](https://aws.amazon.com/cli/)를 사용하여 API를 만듭니다. 이때 원하는 이름을 지정합니다.

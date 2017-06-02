@@ -22,11 +22,15 @@
 
 1.請記下輸出文件中的新網域的 ARN，您將在啟動 CloudFormation 堆疊時使用它做為輸入。
 
-1.定義「headline」與「text」欄位的索引。
+1.定義「headline」與「note_text」欄位的索引。
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [YOUR_DOMAIN_NAME]
+    ```
+
+    ```
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
     ```
 
 #### 步驟 2：建立 API Gateway REST API

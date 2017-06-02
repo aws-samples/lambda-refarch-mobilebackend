@@ -22,13 +22,17 @@ O modelo do AWS CloudFormation fornecido cria a maior parte dos recursos de back
 
 1. Anote o ARN do novo domínio no documento de saída. Você vai usá-lo como uma entrada ao iniciar a pilha do CloudFormation.
 
-1. Defina índices para os campos "headline" e "text".
+1. Defina índices para os campos "headline" e "note_text".
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [YOUR_DOMAIN_NAME]
     ```
 
+    ```
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
+    ```
+    
 #### Etapa 2: criar uma API REST do gateway de API
 
 1. Usando o [AWS CLI](https://aws.amazon.com/cli/), crie uma nova API fornecendo um nome de domínio a sua escolha.

@@ -22,11 +22,15 @@ La plantilla de AWS CloudFormation proporcionada crea la mayoría de los recurso
 
 1. Anote el ARN del nuevo dominio en el documento de salida. Lo usará como dato de entrada cuando lance la pila de CloudFormation.
 
-1. Defina índices para los campos `headline` y `text`.
+1. Defina índices para los campos `headline` y `note_text`.
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [YOUR_DOMAIN_NAME]
+    ```
+
+    ```
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
     ```
 
 #### Paso 2: Crear una API REST de API Gateway

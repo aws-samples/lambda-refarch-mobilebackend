@@ -22,13 +22,17 @@ Le template AWS CloudFormation fourni crée la plupart des ressources backend do
 
 1. Notez l'ARN du nouveau domaine dans le document de sortie. Vous l'utiliserez comme entrée lors du lancement de la stack CloudFormation.
 
-1. Définissez des index pour les champs `headline` et `text`.
+1. Définissez des index pour les champs `headline` et `note_text`.
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [YOUR_DOMAIN_NAME]
     ```
 
+    ```
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
+    ```
+    
 #### Étape 2 : Créer une API Gateway REST API
 
 1. À l'aide de [AWS CLI](https://aws.amazon.com/cli/), créez une API en fournissant le nom de votre choix.

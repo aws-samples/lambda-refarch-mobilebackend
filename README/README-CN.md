@@ -22,11 +22,15 @@
 
 1.记下输出文档中新域的 ARN。启动 CloudFormation 堆栈时，您将使用此信息作为输入。
 
-1.定义 `headline` 和 `text` 字段的索引。
+1.定义 `headline` 和 `note_text` 字段的索引。
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [YOUR_DOMAIN_NAME]
+    ```
+
+    ```
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
     ```
 
 #### 步骤 2：创建 API Gateway REST API
