@@ -32,9 +32,9 @@ The provided AWS CloudFormation template creates most of the backend resources t
     ```
     Note: You will need to reindex your Domain via CLI or Console. Here is the CLI command:
 
-    '''
+    ```
     aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
-    '''
+    ```
 
 #### Step 2: Create an API Gateway REST API
 
