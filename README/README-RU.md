@@ -22,11 +22,15 @@
 
 1. Обратите внимание на ARN нового домена в полученном документе. Вы введете это значение при запуске стека CloudFormation.
 
-1. Определите индексы для полей «headline» и «text».
+1. Определите индексы для полей «headline» и «note_text».
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [YOUR_DOMAIN_NAME]
+    ```
+    
+    ```
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
     ```
 
 #### Шаг 2. Создание API REST для API Gateway

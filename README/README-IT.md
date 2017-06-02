@@ -22,11 +22,15 @@ Il modello di AWS CloudFormation fornito crea la maggior parte delle risorse di 
 
 1. Prendere nota dell'ARN del nuovo dominio nel documento di output. L'ARN verrà utilizzato come input per avviare lo stack di CloudFormation.
 
-1. Definire gli indici per i campi "headline" e "text".
+1. Definire gli indici per i campi "headline" e "note_text".
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [YOUR_DOMAIN_NAME]
+    ```
+
+    ```
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
     ```
 
 #### Passaggio 2: creare un'API REST di API Gateway

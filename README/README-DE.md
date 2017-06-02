@@ -22,11 +22,15 @@ Die bereitgestellte AWS CloudFormation-Vorlage erstellt die meisten Backend-Ress
 
 1. Notieren Sie den ARN der neuen Domain aus dem Ausgabedokument. Sie müssen ihn beim Starten des CloudFormation-Stapels eingeben.
 
-1. Definieren Sie Indizes für die Felder "headline" und "text".
+1. Definieren Sie Indizes für die Felder "headline" und "note_text".
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
-    aws cloudsearch define-index-field --name text --type text --domain-name [YOUR_DOMAIN_NAME]
+    aws cloudsearch define-index-field --name note_text --type text --domain-name [YOUR_DOMAIN_NAME]
+    ```
+
+    ```
+    aws cloudsearch index-documents --domain-name [YOUR_DOMAIN_NAME]
     ```
 
 #### Schritt 2: Erstellen einer REST-API in API Gateway
