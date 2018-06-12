@@ -1,6 +1,11 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-pod 'AWSCore'
-pod 'AWSCognito'
-pod 'AWSS3'
-pod 'AWSAPIGateway', '~> 2.2.1'
+platform :ios, '9.0'
+use_frameworks!
+
+target 'MobileBackendIOS' do
+  pod 'AWSCore'
+  pod 'AWSCognito'
+  pod 'AWSS3'
+  pod 'AWSAPIGateway', '~> 2.2.1'
+end
