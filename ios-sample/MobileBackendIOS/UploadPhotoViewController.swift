@@ -14,21 +14,21 @@ class UploadPhotoViewController: UIViewController,UIImagePickerControllerDelegat
     @IBOutlet weak var uploadButton: UIButton!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     
-    private let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString
-    private let fileManager = NSFileManager.defaultManager()
+    private let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
+    private let fileManager = FileManager.default
     var imagePickerController:UIImagePickerController?
     
     override func viewDidLoad() {
         MobileBackendApi.sharedInstance.configureS3TransferManager()
-        uploadButton.enabled = false
+        uploadButton.isEnabled = false
     }
     
     @IBAction func uploadImageButtonPressed(sender: UIButton) {
-        let imgDirectoryPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-        let fileName = NSProcessInfo.processInfo().globallyUniqueString.stringByAppendingString(".png")
+        let imgDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        let fileName = ProcessInfo.processInfo.globallyUniqueString.appendingFormat(".png")
         let fullyQualifiedPath = "\(imgDirectoryPath)/\(fileName)"
             
-        self.saveFileAndUpload(fullyQualifiedPath, imageName: fileName)
+        self.saveFileAndUpload(imagePath: fullyQualifiedPath, imageName: fileName)
     
     }
     
@@ -40,11 +40,11 @@ class UploadPhotoViewController: UIViewController,UIImagePickerControllerDelegat
             imageController.delegate = self
             
             if isPhotoCameraAvailable() {
-                imageController.sourceType = .Camera
+                imageController.sourceType = .camera
             } else {
-                imageController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+                imageController.sourceType = UIImagePickerControllerSourceType.photoLibrary
             }
-            presentViewController( imageController, animated: true, completion: nil)
+            present( imageController, animated: true, completion: nil)
         }
     }
 
@@ -57,35 +57,35 @@ class UploadPhotoViewController: UIViewController,UIImagePickerControllerDelegat
             if let currentMediaType:AnyObject = mediaType {
                 if currentMediaType is String {
                     let imageType = currentMediaType as! String
-                    if imageType == kUTTypeImage as NSString {
+                    if imageType == (kUTTypeImage as NSString) as String {
                         let image = info[ UIImagePickerControllerOriginalImage] as? UIImage
                         if let currentImage = image{
                             //Process Image
-                            let size = CGSizeApplyAffineTransform(currentImage.size, CGAffineTransformMakeScale(0.25, 0.25))
+                            let size = currentImage.size.applying(CGAffineTransform(scaleX: 0.25, y: 0.25))
                             let hasAlpha = false
                             let scale: CGFloat = 0.0 // Automatically use scale factor of main screen
                             
                             UIGraphicsBeginImageContextWithOptions(size, !hasAlpha, scale)
-                            currentImage.drawInRect(CGRect(origin: CGPointZero, size: size))
+                            currentImage.draw(in: CGRect(origin: .zero, size: size))
                             
                             let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
                             UIGraphicsEndImageContext()
                             
                             //Save Image
                             self.photoImageView.image = scaledImage
-                            self.uploadButton.enabled = true
+                            self.uploadButton.isEnabled = true
 
                         }
                     }
                 }
             }
             
-            picker.dismissViewControllerAnimated( true, completion: nil)
+        picker.dismiss( animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         print(" Picker was cancelled")
-        picker.dismissViewControllerAnimated( true, completion: nil)
+        picker.dismiss( animated: true, completion: nil)
     }
     
     func saveFileAndUpload(imagePath:String, imageName:String) {
@@ -93,13 +93,13 @@ class UploadPhotoViewController: UIViewController,UIImagePickerControllerDelegat
             print("Error: Converting Image To Data")
             return
         }
-        if fileManager.createFileAtPath(imagePath, contents: data, attributes: nil){
-            MobileBackendApi.sharedInstance.uploadImageToS3(imagePath,localFileName: imageName)
+        if fileManager.createFile(atPath: imagePath, contents: data, attributes: nil){
+            MobileBackendApi.sharedInstance.uploadImageToS3(localFilePath: imagePath,localFileName: imageName)
         }
     }
     
     private func isPhotoCameraAvailable() -> Bool{
-        return UIImagePickerController.isSourceTypeAvailable(.Camera)
+        return UIImagePickerController.isSourceTypeAvailable(.camera)
     }
     
 }
