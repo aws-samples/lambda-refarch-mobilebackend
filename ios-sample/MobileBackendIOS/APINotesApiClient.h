@@ -26,47 +26,6 @@
 @interface APINotesApiClient: AWSAPIGatewayClient
 
 /**
- Returns the singleton service client. If the singleton object does not exist, the SDK instantiates the default service client with `defaultServiceConfiguration` from `[AWSServiceManager defaultServiceManager]`. The reference to this object is maintained by the SDK, and you do not need to retain it manually.
-
- If you want to enable AWS Signature, set the default service configuration in `- application:didFinishLaunchingWithOptions:`
- 
- *Swift*
-
-     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-         let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
-         let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
-         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
-
-         return true
-     }
-
- *Objective-C*
-
-     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-          AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
-                                                                                                          identityPoolId:@"YourIdentityPoolId"];
-          AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1
-                                                                               credentialsProvider:credentialsProvider];
-          [AWSServiceManager defaultServiceManager].defaultServiceConfiguration = configuration;
-
-          return YES;
-      }
-
- Then call the following to get the default service client:
-
- *Swift*
-
-     let serviceClient = APINotesApiClient.defaultClient()
-
- *Objective-C*
-
-     APINotesApiClient *serviceClient = [APINotesApiClient defaultClient];
-
- @return The default service client.
- */
-+ (instancetype)defaultClient;
-
-/**
  Creates a service client with the given service configuration and registers it for the key.
 
  If you want to enable AWS Signature, set the default service configuration in `- application:didFinishLaunchingWithOptions:`

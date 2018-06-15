@@ -19,7 +19,7 @@ class AddNoteViewController: UIViewController {
     
     @IBAction func saveNoteButtonPressed(sender: UIButton) {
         if(headlineTextField.text != nil && noteTextField.text != nil) {
-            MobileBackendApi.sharedInstance.postNote(headlineTextField.text!, text: noteTextField.text!)
+            MobileBackendApi.sharedInstance.postNote(headline: headlineTextField.text!, text: noteTextField.text!)
             headlineTextField.text = nil
             noteTextField.text = nil
         } else {
