@@ -14,12 +14,18 @@ class MobileBackendApi  {
     
     init() {
         //Initialize the identity provider
-        self.awsCognitoCredentialsProvider = AWSCognitoCredentialsProvider.credentials(with: CognitoRegionType, accountId: AWSAccountId, identityPoolId: CognitoIdentityPoolId, unauthRoleArn: CognitoUnauthenticatedRoleArn, authRoleArn: CognitoAuthenticatedRoleArn)
+        self.awsCognitoCredentialsProvider = AWSCognitoCredentialsProvider.init(
+            regionType: CognitoRegionType,
+            identityPoolId: CognitoIdentityPoolId,
+            unauthRoleArn: CognitoUnauthenticatedRoleArn,
+            authRoleArn: CognitoAuthenticatedRoleArn,
+            identityProviderManager: nil
+        )
     }
     
     func requestCognitoIdentity() {
-        awsCognitoCredentialsProvider.getIdentityId().continue({ (task) -> Any? in
-            if let error = task?.error {
+        awsCognitoCredentialsProvider.getIdentityId().continueWith(block: { (task) -> Any? in
+            if let error = task.error {
                 print("Error Requesting Unauthenticated user identity: \(error)")
                 self.cognitoId = nil
             } else {
@@ -32,8 +38,9 @@ class MobileBackendApi  {
     func configureS3TransferManager() {
         let configuration = AWSServiceConfiguration(region: DefaultServiceRegionType, credentialsProvider: self.awsCognitoCredentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration
-        
-        AWSS3TransferManager.register(with: configuration, forKey: "USEast1AWSTransferManagerClient")
+        if let configuration = configuration {
+            AWSS3TransferManager.register(with: configuration, forKey: "USEast1AWSTransferManagerClient")
+        }
     }
     
     func configureNoteApi() {
@@ -51,14 +58,11 @@ class MobileBackendApi  {
         noteRequest?.noteId = NSUUID().uuidString
         
         let noteApiClient = APINotesApiClient(forKey: "USEast1NoteAPIManagerClient")
-        noteApiClient?.notesPost(noteRequest).continue({ (task) -> Any? in
-            if let error = task?.error {
+        noteApiClient?.notesPost(noteRequest).continueWith(block: { (task) -> Any? in
+            if let error = task.error {
                 print("Failed creating note: [\(error)]")
             }
-            if let exception = task?.exception {
-                print("Failed creating note: [\(exception)]")
-            }
-            if let noteResponse = task?.result as? APICreateNoteResponse {
+            if let noteResponse = task.result as? APICreateNoteResponse {
                 if((noteResponse.success) != nil) {
                     print("Saved note successfully")
                 }else {
@@ -79,8 +83,8 @@ class MobileBackendApi  {
         
         let s3TransferManager = AWSS3TransferManager.s3TransferManager(forKey: "USEast1AWSTransferManagerClient")
         
-        s3TransferManager?.upload(uploadRequest).continue({ (task) -> Any? in
-            if let error = task?.error as NSError? {
+        s3TransferManager.upload(uploadRequest).continueWith(block: { (task) -> Any? in
+            if let error = task.error as NSError? {
                 if error.domain == AWSS3TransferManagerErrorDomain as String {
                     print("upload() failed: [\(error)]")
                 } else {
@@ -88,11 +92,7 @@ class MobileBackendApi  {
                 }
             }
             
-            if let exception = task?.exception {
-                print("upload() failed: [\(exception)]")
-            }
-            
-            if task?.result != nil {
+            if task.result != nil {
                 print("Uploaded local file to S3: [\(localFileName)]")
             }
             return nil

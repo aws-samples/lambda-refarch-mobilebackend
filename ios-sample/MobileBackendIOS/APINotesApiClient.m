@@ -63,7 +63,6 @@
 
 static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 
-
 + (void)registerClientWithConfiguration:(AWSServiceConfiguration *)configuration forKey:(NSString *)key
     withUrl:(NSString*) url {
     static dispatch_once_t onceToken;
@@ -101,8 +100,8 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
                                                               service:AWSServiceAPIGateway
                                                                   URL:[NSURL URLWithString:URLString]];
 
-        AWSSignatureV4Signer *signer = [AWSSignatureV4Signer signerWithCredentialsProvider:_configuration.credentialsProvider
-                                                                                  endpoint:_configuration.endpoint];
+        AWSSignatureV4Signer *signer = [[AWSSignatureV4Signer alloc] initWithCredentialsProvider:_configuration.credentialsProvider
+                                                                                        endpoint:_configuration.endpoint];
 
         _configuration.baseURL = _configuration.endpoint.URL;
         _configuration.requestInterceptors = @[[AWSNetworkingRequestInterceptor new], signer];

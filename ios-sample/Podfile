@@ -7,5 +7,5 @@ target 'MobileBackendIOS' do
   pod 'AWSCore'
   pod 'AWSCognito'
   pod 'AWSS3'
-  pod 'AWSAPIGateway', '~> 2.2.1'
+  pod 'AWSAPIGateway'
 end

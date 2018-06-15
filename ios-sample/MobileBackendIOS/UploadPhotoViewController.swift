@@ -48,13 +48,13 @@ class UploadPhotoViewController: UIViewController,UIImagePickerControllerDelegat
         }
     }
 
-    
-    func imagePickerController(picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [String : AnyObject]){
+
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [String : Any]) {
             
-            let mediaType:AnyObject? = info[UIImagePickerControllerMediaType]
+            let mediaType = info[UIImagePickerControllerMediaType]
             
-            if let currentMediaType:AnyObject = mediaType {
+            if let currentMediaType = mediaType {
                 if currentMediaType is String {
                     let imageType = currentMediaType as! String
                     if imageType == (kUTTypeImage as NSString) as String {
@@ -82,8 +82,8 @@ class UploadPhotoViewController: UIViewController,UIImagePickerControllerDelegat
             
         picker.dismiss( animated: true, completion: nil)
     }
-    
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         print(" Picker was cancelled")
         picker.dismiss( animated: true, completion: nil)
     }
