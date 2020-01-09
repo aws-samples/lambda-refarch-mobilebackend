@@ -89,7 +89,7 @@
             }, "upload-note.zip"]]
           }
         },
-        "Runtime": "nodejs6.10",
+        "Runtime": "nodejs10.x",
         "Description": "Handles posting notes via API Gateway",
         "Handler": "index.handler",
         "Role": {
@@ -110,7 +110,7 @@
             }, "search.zip"]]
           }
         },
-        "Runtime": "nodejs6.10",
+        "Runtime": "nodejs10.x",
         "Description": "Enables searching notes using CloudSearch domain.",
         "Handler": "index.handler",
         "Role": {
@@ -132,7 +132,7 @@
             }, "stream-handler.zip"]]
           }
         },
-        "Runtime": "nodejs6.10",
+        "Runtime": "nodejs10.x",
         "Description": "Handles posted notes and indexes them in CloudSearch domain.",
         "Handler": "index.handler",
         "Role": {
