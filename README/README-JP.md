@@ -14,15 +14,15 @@
 
 #### ステップ 1: CloudSearch ドメインを作成する
 
-1.[AWS CLI](https://aws.amazon.com/cli/) を使用して、任意のドメイン名を提供する新しい CloudSearch ドメインを作成します。
+1. [AWS CLI](https://aws.amazon.com/cli/) を使用して、任意のドメイン名を提供する新しい CloudSearch ドメインを作成します。
 
     ```
     aws cloudsearch create-domain --domain-name [ドメイン名]
     ```
 
-1.出力ドキュメントの新しいドメインの ARN をメモしておきます。CloudFormation スタックを起動するときに、これを入力として使用します。
+1. 出力ドキュメントの新しいドメインの ARN をメモしておきます。CloudFormation スタックを起動するときに、これを入力として使用します。
 
-1.`headline` および `note_text` フィールドのインデックスを定義します。
+1. `headline` および `note_text` フィールドのインデックスを定義します。
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [ドメイン名]
@@ -35,23 +35,23 @@
 
 #### ステップ 2: API Gateway REST API を作成する
 
-1.[AWS CLI](https://aws.amazon.com/cli/) を使用し、任意の名前を指定して新しい API を作成します。
+1. [AWS CLI](https://aws.amazon.com/cli/) を使用し、任意の名前を指定して新しい API を作成します。
 
     ```
     aws apigateway create-rest-api --name [API 名]
     ```
 
-1.出力ドキュメントの `API ID` をメモしておきます。CloudFormation スタックを起動するときに、これを入力として使用します。
+1. 出力ドキュメントの `API ID` をメモしておきます。CloudFormation スタックを起動するときに、これを入力として使用します。
 
 #### ステップ 3: Amazon Cognito ID プールを作成する
 
-1.[AWS CLI](https://aws.amazon.com/cli/) を使用し、任意の名前を指定して新しい ID プールを作成します。
+1. [AWS CLI](https://aws.amazon.com/cli/) を使用し、任意の名前を指定して新しい ID プールを作成します。
 
     ```
     aws cognito-identity create-identity-pool --allow-unauthenticated-identities --identity-pool-name [プール名]
     ```
 
-1.出力ドキュメントの `IdentityPoolId` をメモしておきます。CloudFormation スタックを起動するときに、これをパラメーターとして使用します。
+1. 出力ドキュメントの `IdentityPoolId` をメモしておきます。CloudFormation スタックを起動するときに、これをパラメーターとして使用します。
 
 #### ステップ 4: CloudFormation テンプレートを起動する
 
@@ -69,38 +69,38 @@
 
 CloudFormation スタックを作成した後で、新しく作成された `NotesApiFunction` を使用するには、前に作成した API を更新する必要があります。
 
-1.[Amazon API Gateway Console](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis) で、API を選択します。
-1.[**Create Resource**] を選択し、/ 以下に新しい子リソースを作成します。
-1.リソース名として「notes」、リソースパスとして「/notes」と入力します。
-1.[**Create Resource**] を選択します。
-1.新しい `/notes` リソースを選択して、[**Create Method**] を選択します。
-1.[`POST`] を選択し、チェックボックスをオンにします。
-1.統合タイプとして [**Lambda Function**] を選択し、Lambda リージョンとして CloudFormation スタックを起動したリージョンを選択します。
-1.[**Lambda Function**] に「**`NotesApiFunction`**」と入力し、CloudFormation スタックで作成した関数を選択します。
-1.[**Save**] を選択し、Lambda 関数を実行するための API Gateway アクセス権限を付与します。
-1.[**Method Request**] を選択してリクエスト設定を編集します。
-1.[**Authorization type**] で、[`AWS_IAM`] を選択します。
-1.[ **API Key Required**] で、[`true`] を選択します。
-1.[**Deploy API**] を選択します。
-1.[ **Deployment stage**] で、[`New Stage`] を選択し、[**Stage name**] に名前を入力します。
-1.新しいステージの [**Invoke URL**] をメモしておきます。iOS サンプルアプリを実行するときに、この値を使用します。
+1. [Amazon API Gateway Console](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis) で、API を選択します。
+1. [**Create Resource**] を選択し、/ 以下に新しい子リソースを作成します。
+1. リソース名として「notes」、リソースパスとして「/notes」と入力します。
+1. [**Create Resource**] を選択します。
+1. 新しい `/notes` リソースを選択して、[**Create Method**] を選択します。
+1. [`POST`] を選択し、チェックボックスをオンにします。
+1. 統合タイプとして [**Lambda Function**] を選択し、Lambda リージョンとして CloudFormation スタックを起動したリージョンを選択します。
+1. [**Lambda Function**] に「**`NotesApiFunction`**」と入力し、CloudFormation スタックで作成した関数を選択します。
+1. [**Save**] を選択し、Lambda 関数を実行するための API Gateway アクセス権限を付与します。
+1. [**Method Request**] を選択してリクエスト設定を編集します。
+1. [**Authorization type**] で、[`AWS_IAM`] を選択します。
+1. [ **API Key Required**] で、[`true`] を選択します。
+1. [**Deploy API**] を選択します。
+1. [ **Deployment stage**] で、[`New Stage`] を選択し、[**Stage name**] に名前を入力します。
+1. 新しいステージの [**Invoke URL**] をメモしておきます。iOS サンプルアプリを実行するときに、この値を使用します。
 
 #### ステップ 6: API キーを作成する
 
-1.[Amazon API Gateway Console](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis) で、[**APIs**] を選択し、[**API Keys**] を選択します。
-1.[**Create API Key**] を選択します。
-1.キーの名前を入力し、[**Enabled**] を選択します。
-1.[**Save**] を選択します。
-1.[**API Stage Association**] セクションで API を選択し、前のステップで作成したステージを選択します。
-1.[**Add**] を選択します。
-1.[**API key**] をメモしておきます。モバイルアプリケーションを実行するときに、これを使用します。
+1. [Amazon API Gateway Console](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis) で、[**APIs**] を選択し、[**API Keys**] を選択します。
+1. [**Create API Key**] を選択します。
+1. キーの名前を入力し、[**Enabled**] を選択します。
+1. [**Save**] を選択します。
+1. [**API Stage Association**] セクションで API を選択し、前のステップで作成したステージを選択します。
+1. [**Add**] を選択します。
+1. [**API key**] をメモしておきます。モバイルアプリケーションを実行するときに、これを使用します。
 
 #### ステップ 7: Amazon Cognito ID プールを更新する
 
-1.[Amazon Cognito コンソール](https://console.aws.amazon.com/cognito/home?region=us-east-1) で、ID プールを選択します。
-1.[**Edit Identity Pool**] を選択します。
-1.[**Unauthenticated role**] および [**Authenticated role**] の両方について、CloudFormation スタックで作成された [**MobileClientRole**] を選択します。ロールの完全な ARN は、スタックの出力に含まれます。
-1.[**Save Changes**] を選択します。
+1. [Amazon Cognito コンソール](https://console.aws.amazon.com/cognito/home?region=us-east-1) で、ID プールを選択します。
+1. [**Edit Identity Pool**] を選択します。
+1. [**Unauthenticated role**] および [**Authenticated role**] の両方について、CloudFormation スタックで作成された [**MobileClientRole**] を選択します。ロールの完全な ARN は、スタックの出力に含まれます。
+1. [**Save Changes**] を選択します。
 
 
 ### iOS サンプルアプリケーションの実行
@@ -111,21 +111,21 @@ CloudFormation スタックを作成した後で、新しく作成された `Not
 
 #### アプリケーションの構築と実行
 
-1.このレポジトリの **ios-sample** のソースコードをチェックアウトまたはダウンロードします。
-1.バックエンドデプロイの値で `MobileBackendIOS/Constants.swift` を更新します。ほとんどの値は、CloudFormation スタックの出力に含まれています。API Gateway キーおよびエンドポイント URL の値は、AWS マネジメントコンソールの API の詳細で確認できます。
-1.ルートの `ios-sample` ディレクトリから Cocoa Pods を実行します。
+1. このレポジトリの **ios-sample** のソースコードをチェックアウトまたはダウンロードします。
+1. バックエンドデプロイの値で `MobileBackendIOS/Constants.swift` を更新します。ほとんどの値は、CloudFormation スタックの出力に含まれています。API Gateway キーおよびエンドポイント URL の値は、AWS マネジメントコンソールの API の詳細で確認できます。
+1. ルートの `ios-sample` ディレクトリから Cocoa Pods を実行します。
 
     ```
     pod install
     ```
 
-1.Xcode で、生成された `MobileBackendIOS.xcworkspace` ファイルを開きます。
+1. Xcode で、生成された `MobileBackendIOS.xcworkspace` ファイルを開きます。
 
     ```
     Xcode MobileBackendIOS.xcworkspace を開きます。
     ```
 
-1.ウィンドウの上部にある再生ボタンをクリックして、Xcode からプロジェクトを構築および実行します。
+1. ウィンドウの上部にある再生ボタンをクリックして、Xcode からプロジェクトを構築および実行します。
 
 ## アプリケーションのテスト
 
@@ -133,9 +133,9 @@ CloudFormation スタックを作成した後で、新しく作成された `Not
 
 ### 画像をアップロードするには
 
-1.アプリケーションの [**Upload Image**] を選択します。
-1.カメラアイコンを選択し、カメラロールから画像を選択して、[**Choose**] を選択します。
-1.[**Upload**] ボタンを選択します。
+1. アプリケーションの [**Upload Image**] を選択します。
+1. カメラアイコンを選択し、カメラロールから画像を選択して、[**Choose**] を選択します。
+1. [**Upload**] ボタンを選択します。
 
 #### 画像がアップロードされたことの確認
 
@@ -145,9 +145,9 @@ AWS マネジメントコンソールを使用して CloudFormation スタック
 
 ### メモを投稿するには
 
-1.[**Post a Note**] を選択します。
-1.メモに見出しとテキストを入力します。
-1.[**Save Note**] を選択します。
+1. [**Post a Note**] を選択します。
+1. メモに見出しとテキストを入力します。
+1. [**Save Note**] を選択します。
 
 #### メモが投稿されたことの確認
 
@@ -164,10 +164,10 @@ AWS マネジメントコンソールを使用して CloudFormation スタック
 
 この例で作成されたすべてのリソースを削除するには、次の操作を行います。
 
-1.CloudFormation スタックによって作成された S3 バケットからすべてのオブジェクトを削除します。
-1.CloudFormation スタックを削除します。
-1.Amazon Cognito ID プール、API Gateway、および CloudSearch ドメインを削除します。
-1.CloudFormation スタックによって作成された各 Lambda 関数と関連付けられた CloudWatch ロググループを削除します。
+1. CloudFormation スタックによって作成された S3 バケットからすべてのオブジェクトを削除します。
+1. CloudFormation スタックを削除します。
+1. Amazon Cognito ID プール、API Gateway、および CloudSearch ドメインを削除します。
+1. CloudFormation スタックによって作成された各 Lambda 関数と関連付けられた CloudWatch ロググループを削除します。
 
 ## CloudFormation テンプレートのリソース
 

@@ -14,15 +14,15 @@
 
 #### 步骤 1：创建 CloudSearch 域
 
-1.使用 [AWS CLI](https://aws.amazon.com/cli/) 创建新 CloudSearch 域，自己选择一个域名。
+1. 使用 [AWS CLI](https://aws.amazon.com/cli/) 创建新 CloudSearch 域，自己选择一个域名。
 
     ```
     aws cloudsearch create-domain --domain-name [YOUR_DOMAIN_NAME]
     ```
 
-1.记下输出文档中新域的 ARN。启动 CloudFormation 堆栈时，您将使用此信息作为输入。
+1. 记下输出文档中新域的 ARN。启动 CloudFormation 堆栈时，您将使用此信息作为输入。
 
-1.定义 `headline` 和 `note_text` 字段的索引。
+1. 定义 `headline` 和 `note_text` 字段的索引。
 
     ```
     aws cloudsearch define-index-field --name headline --type text --domain-name [YOUR_DOMAIN_NAME]
@@ -35,23 +35,23 @@
 
 #### 步骤 2：创建 API Gateway REST API
 
-1.使用 [AWS CLI](https://aws.amazon.com/cli/) 创建新 API，自己选择一个名称。
+1. 使用 [AWS CLI](https://aws.amazon.com/cli/) 创建新 API，自己选择一个名称。
 
     ```
     aws apigateway create-rest-api --name [YOUR_API_NAME]
     ```
 
-1.记下输出文档中提供的 `API ID`。启动 CloudFormation 堆栈时，您将使用此信息作为输入。
+1. 记下输出文档中提供的 `API ID`。启动 CloudFormation 堆栈时，您将使用此信息作为输入。
 
 #### 步骤 3：创建 Amazon Cognito 身份池
 
-1.使用 [AWS CLI](https://aws.amazon.com/cli/) 创建新身份池，自己选择一个名称。
+1. 使用 [AWS CLI](https://aws.amazon.com/cli/) 创建新身份池，自己选择一个名称。
 
     ```
     aws cognito-identity create-identity-pool --allow-unauthenticated-identities --identity-pool-name [YOUR_POOL_NAME]
     ```
 
-1.记下输出文档中的 `IdentityPoolId`。启动 CloudFormation 堆栈时，您将使用此信息作为参数。
+1. 记下输出文档中的 `IdentityPoolId`。启动 CloudFormation 堆栈时，您将使用此信息作为参数。
 
 #### 步骤 4：启动 CloudFormation 模板
 
@@ -69,38 +69,38 @@
 
 创建 CloudFormation 堆栈后，您需要更新先前创建的 API 以使用新创建的 `NotesApiFunction`。
 
-1.在 [Amazon API Gateway 控制台](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis) 中选择您的 API。
-1.选择 **Create Resource** 以在 / 下面创建新的子资源。
-1.键入 `notes` 作为资源名称，并键入 `/notes` 作为资源路径。
-1.选择 **Create Resource**。
-1.选中 `/notes` 资源后，选择 **Create Method**。
-1.选择 `POST` 并选中复选框。
-1.选择 **Lambda Function** 作为集成类型，然后选择启动 CloudFormation 堆栈时所在的区域作为 Lambda 区域。
-1.在 **Lambda Function** 中，键入 **`NotesApiFunction`**，然后选择 CloudFormation 堆栈创建的函数。
-1.选择 **Save**，并授予 API Gateway 权限以执行 Lambda 函数。
-1.选择 **Method Request** 以编辑请求配置。
-1.对于 **Authorization type**，选择 `AWS_IAM`。
-1.对于 **API Key Required**，选择 `true`。
-1.选择 **Deploy API**。
-1.对于 **Deployment stage**，选择 `New Stage`，然后在 **Stage name** 中键入名称。
-1.记下新阶段的 **Invoke URL**。运行示例 iOS 应用程序时，您将使用此值。
+1. 在 [Amazon API Gateway 控制台](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis) 中选择您的 API。
+1. 选择 **Create Resource** 以在 / 下面创建新的子资源。
+1. 键入 `notes` 作为资源名称，并键入 `/notes` 作为资源路径。
+1. 选择 **Create Resource**。
+1. 选中 `/notes` 资源后，选择 **Create Method**。
+1. 选择 `POST` 并选中复选框。
+1. 选择 **Lambda Function** 作为集成类型，然后选择启动 CloudFormation 堆栈时所在的区域作为 Lambda 区域。
+1. 在 **Lambda Function** 中，键入 **`NotesApiFunction`**，然后选择 CloudFormation 堆栈创建的函数。
+1. 选择 **Save**，并授予 API Gateway 权限以执行 Lambda 函数。
+1. 选择 **Method Request** 以编辑请求配置。
+1. 对于 **Authorization type**，选择 `AWS_IAM`。
+1. 对于 **API Key Required**，选择 `true`。
+1. 选择 **Deploy API**。
+1. 对于 **Deployment stage**，选择 `New Stage`，然后在 **Stage name** 中键入名称。
+1. 记下新阶段的 **Invoke URL**。运行示例 iOS 应用程序时，您将使用此值。
 
 #### 步骤 6：创建 API 密钥
 
-1.在 [Amazon API Gateway 控制台](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis) 中选择 **APIs**，然后选择 **API Keys**。
-1.选择 **Create API Key**。
-1.为密钥键入名称，然后选择 **Enabled**。
-1.选择 **Save**
-1.在 **API Stage Association** 部分中，选择您的 API，然后选择您在上一步中创建的阶段。
-1.选择 **Add**。
-1.记下 **API key**。运行移动应用程序时，您将使用此信息。
+1. 在 [Amazon API Gateway 控制台](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis) 中选择 **APIs**，然后选择 **API Keys**。
+1. 选择 **Create API Key**。
+1. 为密钥键入名称，然后选择 **Enabled**。
+1. 选择 **Save**
+1. 在 **API Stage Association** 部分中，选择您的 API，然后选择您在上一步中创建的阶段。
+1. 选择 **Add**。
+1. 记下 **API key**。运行移动应用程序时，您将使用此信息。
 
 #### 步骤 7：更新您的 Amazon Cognito 身份池
 
-1.在 [Amazon Cognito 控制台](https://console.aws.amazon.com/cognito/home?region=us-east-1) 中，选择您的身份池。
-1.选择 **Edit Identity Pool**。
-1.对于 **Unauthenticated role** 和 **Authenticated role**，选择 CloudFormation 堆栈创建的 **MobileClientRole**。堆栈输出中提供角色的完整 ARN。
-1.选择 **Save Changes**。
+1. 在 [Amazon Cognito 控制台](https://console.aws.amazon.com/cognito/home?region=us-east-1) 中，选择您的身份池。
+1. 选择 **Edit Identity Pool**。
+1. 对于 **Unauthenticated role** 和 **Authenticated role**，选择 CloudFormation 堆栈创建的 **MobileClientRole**。堆栈输出中提供角色的完整 ARN。
+1. 选择 **Save Changes**。
 
 
 ### 运行示例 iOS 应用程序
@@ -111,21 +111,21 @@
 
 #### 构建和运行应用程序
 
-1.签出或下载此存储库中的 **ios-sample** 源代码。
-1.使用后端部署的值更新 `MobileBackendIOS/Constants.swift`。在 CloudFormation 堆栈输出中可以找到大多数值。在 AWS 管理控制台中，可以在 API 详细信息中找到 API Gateway 密钥和终端节点 URL 值。
-1.从 `ios-sample` 根目录运行 Cocoa Pods。
+1. 签出或下载此存储库中的 **ios-sample** 源代码。
+1. 使用后端部署的值更新 `MobileBackendIOS/Constants.swift`。在 CloudFormation 堆栈输出中可以找到大多数值。在 AWS 管理控制台中，可以在 API 详细信息中找到 API Gateway 密钥和终端节点 URL 值。
+1. 从 `ios-sample` 根目录运行 Cocoa Pods。
 
     ```
     pod install
     ```
 
-1.在 Xcode 中打开生成的 `MobileBackendIOS.xcworkspace` 文件。
+1. 在 Xcode 中打开生成的 `MobileBackendIOS.xcworkspace` 文件。
 
     ```
     open -a Xcode MobileBackendIOS.xcworkspace
     ```
 
-1.通过单击窗口顶部的播放按钮，从 Xcode 构建并运行项目。
+1. 通过单击窗口顶部的播放按钮，从 Xcode 构建并运行项目。
 
 ## 测试应用程序
 
@@ -133,9 +133,9 @@
 
 ### 上传图像
 
-1.在应用程序中，选择 **Upload Image**。
-1.选择相机图标，从相册中选择图像，然后选择 **Choose**。
-1.选择 **Upload** 按钮。
+1. 在应用程序中，选择 **Upload Image**。
+1. 选择相机图标，从相册中选择图像，然后选择 **Choose**。
+1. 选择 **Upload** 按钮。
 
 #### 验证是否已上传图像
 
@@ -145,9 +145,9 @@
 
 ### 发布备注
 
-1.选择 **Post a Note**。
-1.在备注中键入标题和文本。
-1.选择 **Save Note**。
+1. 选择 **Post a Note**。
+1. 在备注中键入标题和文本。
+1. 选择 **Save Note**。
 
 #### 验证是否已发布备注
 
@@ -164,10 +164,10 @@
 
 要删除此示例创建的所有资源，请执行以下操作：
 
-1.删除 CloudFormation 堆栈创建的 S3 存储桶中的所有对象。
-1.删除 CloudFormation 堆栈。
-1.删除 Amazon Cognito 身份池、API Gateway 和 CloudSearch 域。
-1.删除与 CloudFormation 堆栈创建的每个 Lambda 函数关联的 CloudWatch 日志组。
+1. 删除 CloudFormation 堆栈创建的 S3 存储桶中的所有对象。
+1. 删除 CloudFormation 堆栈。
+1. 删除 Amazon Cognito 身份池、API Gateway 和 CloudSearch 域。
+1. 删除与 CloudFormation 堆栈创建的每个 Lambda 函数关联的 CloudWatch 日志组。
 
 ## CloudFormation 模板资源
 
